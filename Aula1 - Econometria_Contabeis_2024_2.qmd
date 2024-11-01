@@ -1,0 +1,274 @@
+---
+title: "Econometria"
+subtitle: "Ciênicas Contábeis UFR 2024/2 | Prof. Djalma Barbosa"
+format: 
+  revealjs:
+    slide-number: true
+    logo: logoUfr.png
+    incremental: true
+    scrollable: true
+    theme: simple
+    code-fold: false
+    self-contained: true
+editor: visual
+---
+
+## Econometria x Ciência de Dados
+
+## Econometria
+
+<br>
+
+Econometria refere-se ao uso de métodos estatísticos para estimar relações econômicas, testar teorias, avaliar e testar políticas de governos e negócios (Wooldridge, 2010).
+
+## Ciência de dados (*Data Science*)
+
+<br>
+
+É um campo acadêmico interdisciplinar que utiliza estatística , computação científica, métodos científicos, processos, algoritmos e sistemas para extrair ou extrapolar conhecimento e *insights* de dados ruidosos, estruturados e não estruturados (Dhar, V. (2013)
+
+O trabalho do cientista de dados envolve:
+
+-   Desenvolver produtos de dados
+
+    -   [Relatórios automatizados](https://rawcdn.githack.com/WA-Department-of-Agriculture/soils/944448976992604a12dafbf47258327be0e5ab98/inst/example_reports/example_producer_report.html)
+
+    -   [Dashboards](https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/aedes-aegypti/monitoramento-das-arboviroses)
+
+    -   [Aplicativos Web](https://djalmabarbosa.shinyapps.io/TematicoApp/)
+
+        -   Por exemplo, com Shiny
+
+-   Implementar modelos na produção
+
+## Mineração de Dados (*Data Mining*)
+
+<br>
+
+“É o processo de extrair e descobrir padrões em grandes bancos de dados envolvendo métodos relacionados à aprendizagem de máquina, estatística e sistemas de bancos de dados.” Wikipedia
+
+## Mercado
+
+## Analista x Cientista x Engenheiro de Dados {.center}
+
+## Analista de dados
+
+[![Ciclo de vida de um projeto - Analista de Dados (https://www.datacamp.com/)](project_life_cicle_data_analyst.png)](https://www.datacamp.com/)
+
+## Cientista de dados
+
+[![Ciclo de vida de um projeto A - Cientista de Dados (https://www.datacamp.com/)](project_life_cicle_data_scientist.png)](https://www.datacamp.com/)
+
+## 
+
+![Ciclo de vida de um projeto B - Cientista de Dados (https://r4ds.hadley.nz/)](programa.png)
+
+## Engenheiro de Dados
+
+![Infraestrutura de Dados](data_science_infraestructure.svg){width="70%"}
+
+## Por que utilizar uma linguagem de programação
+
+-   Os *scripts* feitos no R podem ser reproduzidos
+
+-   Permite automatização de tarefas
+
+-   Permite criar diversos tipos de arquivo (.pdf, html, .docx, latex...)
+
+-   Permite criar dashboards e gráficos interativos de forma automatizada
+
+-   Integra-se facilmente com outras linguagens de programação e planilhas eletrônicas
+
+## Plano de Ensino
+
+### Ementa
+
+Correlação. Regressão Linear Simples e Múltipla. Análise Discriminante. Simulação. Análise da Decisão. Análise Multivariada.
+
+<br>
+
+### Justificativa
+
+A prática do profissional de Contabilidade é repleta de decisões que podem ser baseada em dados. A grande quantidade de dados disponível atualmente permite uma decisão intensiva em dados (data-driven decision making), o que faz relevante o estudo da Econometria.\
+\
+Dessa forma, esta disciplina irá apresentar aos alunos os conceitos fundamentais da econometria, bem como um instrumental analítico para a coleta, manipulação, apresentação e análise de dados com planilhas eletrônicas e com o Software R, em uma perspectiva que possa ser adotada na prática contábil.
+
+<br>
+
+### Objetivo Geral
+
+Apresentar ao estudante os conceitos fundamentais relacionados à Econometria, mostrando-os como problemas reais podem ser resolvidos com esta perspectiva.
+
+<br>
+
+### Objetivos Específicos
+
+1.  Proporcionar o desenvolvimento do raciocínio lógico e quantitativo.
+2.  Trabalhar a capacidade de análise de decisão utilizando modelos estatísticos e de aprendizagem de máquina.
+3.  Desenvolver habilidades de coleta, limpeza, manipulação de bases de dados e modelagem utilizando o software R.
+4.  Aprimorar o uso de planilhas eletrônicas.
+
+<br>
+
+### Conteúdo Programático
+
+-   Aula 1 (01/11) - Apresentação da disciplina - Econometria x Ciência de Dados - Introdução ao software R
+
+-   Aula 2 (08/11) - Leitura e Manipulação de Dados no R (A)
+
+-   Aula 3 (22/11) - Manipulação de dados no R (B) e Estatísticas descritivas no R
+
+-   Aula 4 (29/11) - Visualização de dados no R
+
+-   Aula 5 (06/12) - Regressão linear
+
+-   Aula 6 (13/12) - Regressão linear - aplicação em planilhas eletrônicas
+
+-   Aula 7 (20/12) - Avaliação Parcial
+
+-   Aula 8 (07/02) - Regressão linear - aplicação no R
+
+-   Aula 9 (14/02) - Construção de modelos no R
+
+-   Aula 10 (21/02) - Análise de cluster
+
+-   Aula 11 (28/02) - Análise discriminante
+
+-   Aula 12 (07/03) - Validação cruzada e curva ROC
+
+-   Aula 13 (14/03) - Classificação com Naive Bayes
+
+-   Aula 14 (21/03) - Árvores de decisão e Redes Neurais
+
+-   Aula 15 (28/03) - Elaboração do Trabalho
+
+-   Aula 16 (02/04) - Entrega do Trabalho
+
+<br>
+
+### Metodologia
+
+A proposta metodológica baseia-se em momentos de aprendizagem que envolvem diferentes meios de exposição visando a apreensão e desenvolvimento do conhecimento.\
+Estão previstas aulas expositivas e aulas práticas em planilhas eletrônicas e em software.\
+Esta disciplina requer 2 horas por semana extraclasse para estudo.
+
+<br>
+
+### Avaliações
+
+Exercícios: 25 pontos\
+Avaliação Parcial: 25 pontos\
+Trabalho final: 50 pontos
+
+<br>
+
+### Referências Bibliográficas
+
+ANDERSON, David, R.; SWEENEY, Dennis, J.; WILLIAMS, Thomas, A. Estatística Aplicada à Administração e Economia. Thompson, 2002.
+
+GUJARATI, Damodar N. Economia Básica. 3 ed. São Paulo: Perarson, 2005.
+
+IRIZARRY, Rafael A. Introdução à Ciência de Dados (<https://rafalab.dfci.harvard.edu/dslivro/>)
+
+Da Silva FR, Gonçalves-Souza T, Paterno GB, Provete DB, Vancine MH. 2022. Análises ecológicas no R. Nupeea : Recife, PE, Canal 6 : São Paulo. 640 p. ISBN 978-85-7917-564-0. ([https://analises-ecologicas.com](https://analises-ecologicas.com/#como-citar))
+
+## Introdução ao R
+
+-   O R é uma linguagem de programação
+-   Linguagens de programação funcionam por meio de uma sequência de **comandos escritos** (*códigos*)
+-   O R é uma linguagem de programação *funcional*
+-   As funções são armazenadas em pacotes
+    -   Pacotes básicos + pacotes instaláveis
+    -   Mais de 16.000 pacotes (2020)
+
+## Por que o R?
+
+-   O software e a linguagem *gratuitos*
+
+-   Pode ser utilizado em diversos sistemas operacioanais
+
+-   Possui uma comunidade de colaboração ativa
+
+-   Possui um sistema de 'controle de qualidade'
+
+-   É a linguagem preferida dos estatísticos
+
+-   É uma das linguagens de análise estatísticas mais utilizadas no mundo.
+
+## Como baixar e instalar o R
+
+<https://cran.r-project.org/bin/windows/base/>
+
+![](R_download.png)
+
+![](R_mirror.png)
+
+![](R_install.png)
+
+## Console do R
+
+![Console do R](R_console.png)
+
+## Baixando e instalando o RStudio
+
+![RStudio](RStudio2.png)
+
+## Escrevendo no painel *console* do RStudio
+
+![Console do RStudio](RStudio_console.png)
+
+## Escrevendo um *Script*
+
+-   Um *script* é um texto em forma de comandos (códigos), que o R interpreta como uma ação a ser executada.
+
+-   É um roteiro de execução
+
+-   No RStudio, criamos um *script* clicando em *Menu*, *File, New File, R Script*.
+
+-   Para salvar: *File, Save*
+
+## Utilizando pacotes (*packages*)
+
+-   Podemos acessar os pacotes em *Tools, Install Packages*.
+
+-   Utilizando o comando:
+
+    ``` r
+    install.packages("tidyverse")
+    ```
+
+-   Carregando o pacote instalado
+
+    ``` r
+    library(tidyverse)
+    ```
+
+    -   Você sempre precisará recarregar os novos pacotes após encerrar uma seção
+
+-   Verificando os pacotes instalados
+
+    ``` r
+    sessionInfo()
+    ```
+
+-   Atualizando pacotes
+
+## Dicas de organização do *script*
+
+-   Uso do \#
+
+-   Identação
+
+## Verificando o diretório de trabalho
+
+``` R
+getwd()
+```
+
+## Utilizando a ferramenta de "Projetos"
+
+-   Organiza seus diretórios
+
+-   Facilita a importação e exportação de bases de dados
+
+-   Facilita o compartilhamento de código
