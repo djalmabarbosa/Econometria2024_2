@@ -4,6 +4,7 @@ subtitle: "Análise de dados | Prof. Djalma Barbosa"
 format: 
     revealjs:
       slide-number: true
+      slide-level: 3
       logo: logoUfr.png
       incremental: true
       scrollable: true
@@ -50,7 +51,7 @@ Bancos de dados, ou *dataframes* são dados organizados em duas dimensões, linh
 
 Em um *dataframe* cada coluna representa uma variável e cada linha uma observação.
 
-![Tabela com dados municipais](Tabela_dados_municipios.png){alt="Tabela com dados municipais"}
+![Tabela com dados municipais](Tabela_dados_municipios.png)
 
 As colunas tem como características:
 
@@ -72,6 +73,40 @@ O primeiro passo para a análise de dados é importar os dados.
 
 ## Importando dados
 
-A linguagem R é um paradigma de **programação orientada a objetos**. Qualquer estrutura é armazenada na forma de um **objeto**, podendo ser um valor, conjunto de valores o um mesmo uma base de dados.
+-   A linguagem R é um paradigma de **programação orientada a objetos**. Qualquer estrutura é armazenada na forma de um **objeto**, podendo ser um valor, conjunto de valores o um mesmo uma base de dados.
 
-Para criar e alterar objetos no R utilizamos o símbolo \<-, chamado de
+-   Para criar e alterar objetos no R utilizamos o símbolo \<-, chamado de **operador de atribuição**.
+
+    -   Também podemos utilizar '=' para atribuição, mas como ele tem outros usos, pode gerar confusão.
+
+        ![Atribuição de dados a um objeto no R (Fonte: Introdução à Análise de Dados no R)](atribuição.png)
+
+-   Antes de importarmos os dados, temos que discutir o conceito de função
+
+### Funções no R
+
+-   O R é uma linguagem funcional
+
+-   Funções vêm associadas a parênteses '( )', onde colocamos os *argumentos da função*.
+
+-   Exemplos da matemática: $y = f(x)$, $z = f(x,y)$ ...
+
+### Importando arquivos no formato CSV
+
+-   Utilizaremos uma **função** do pacote *readr*.
+
+1.  Crie um projeto (ou use o que vc já criou).
+
+2.  Crie um *script* (*File, New file e R Script*)
+
+3.  Digite:
+
+    ```         
+    if(!require(readr)) install.packages("readr")
+    ```
+
+    ```
+    library (readr)
+    ```
+4. Faça comentários no seu código para explicar os comando acima
+
