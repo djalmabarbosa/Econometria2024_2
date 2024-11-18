@@ -1,15 +1,15 @@
 ---
 title: "Econometria"
-subtitle: "Ciênicas Contábeis UFR 2024/2 | Prof. Djalma Barbosa"
+subtitle: "Ciências Contábeis UFR 2024/2 | Prof. Djalma Barbosa"
 format: 
-  revealjs:
-    slide-number: true
-    logo: logoUfr.png
-    incremental: true
-    scrollable: true
-    theme: simple
-    code-fold: false
-    self-contained: true
+    revealjs:
+      slide-number: true
+      logo: logoUfr.png
+      incremental: true
+      scrollable: true
+      theme: simple
+      code-fold: false
+      self-contained: true
 editor: visual
 ---
 
@@ -78,6 +78,27 @@ O trabalho do cientista de dados envolve:
 -   Permite criar dashboards e gráficos interativos de forma automatizada
 
 -   Integra-se facilmente com outras linguagens de programação e planilhas eletrônicas
+
+## Ciência de Dados e Aprendizagem de Máquina (Machine Learning)
+
+-   Aprendizagem de máquina faz parte da ciência de dados
+
+-   Consiste em desenvolver algoritmos que permitem os computadores aprenderem dos dados e tomarem decisões baseadas em dados
+
+## Ciência de Dados e Mineração de Dados
+
+-   Mineração de dados também pode ser vista como um subconjunto da ciência de dados
+
+-   Consiste em descobrir padrões e extrair padrões do dados
+
+-   Envolve o uso de algoritmos e métodos estatísticos
+
+-   Tem como principais tarefas:
+
+    1.  Descoberta de padrões (associações, correlações)
+    2.  Predição
+    3.  Classificação
+    4.  Agrupamento
 
 ## Plano de Ensino
 
@@ -261,7 +282,7 @@ Da Silva FR, Gonçalves-Souza T, Paterno GB, Provete DB, Vancine MH. 2022. Anál
 
 ## Verificando o diretório de trabalho
 
-``` R
+``` r
 getwd()
 ```
 
