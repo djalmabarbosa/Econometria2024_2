@@ -16,60 +16,66 @@ editor: visual
 
 ## Análise de dados
 
-A análise de dados vem sendo cada vez mais frequente no ambiente contábil/empresarial.
+-   A análise de dados vem sendo cada vez mais frequente no ambiente contábil/empresarial.
 
-A análise de dados envolve descrição, comparação e modelagem, relacionando características de tempo, pessoa e lugar.
+-   A análise de dados envolve descrição, comparação e modelagem, relacionando características de tempo, pessoa e lugar.
 
-Por meio dela podemos identificar:
+-   Por meio dela podemos identificar:
 
-1.  perfis
-2.  padrões
-3.  tendências
-4.  acompanhamento
+    -   perfis
 
-![Tabela com dados municipais](Tabela_dados_municipios.png)
+    -   padrões
 
-Utilizaremos os dados da tabela acima como exemplo ao longo da disciplina.
+    -   tendências
 
-Contruiremos roteiros (*scripts*) com comandos em R.
+    -   acompanhamento
 
-As linhas de código irão conter os seguintes elementos definidos abaixo:
+### Exemplo de dados
 
-| Termos        | Sinônimos                             | Descrição                                                                                               |
-|--------------------|--------------------------|--------------------------|
-| Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados                                                                    |
-| Variável      | Coluna, *column*,Cabeçalho            | Onde os dados (valores, registos ou observações) são armazenados e que é utilizado durante a análise    |
-| Linha         | *row*, Observação, Registro, Valor    | São dados de diferentes tipos (números, datas, textos, etc                                              |
-| Função        | Verbo, Comando, Ação                  | São ordens dadas ao software R, para que ele execute uma ação necessária para sua análise               |
-| Argumento     | Parâmetros                            | Criar uma personalização de características para executar um comando (cores, tamanhos, caracteres, etc) |
+-   Utilizaremos os dados da tabela abaixo como exemplo ao longo da disciplina.
 
-| Output \| Resultado \| São as saídas oriundas de uma ação solicitada, ou seja, tudo que queremos que nosso código no R retorne para nós, podendo ser no formato de textos, tabelas, gráficos, mapas, imagens, etc. \|
+    -   ![](Tabela_dados_municipios.png)
+
+-   Contruiremos roteiros (*scripts*) com comandos em R.
+
+-   As linhas de código irão conter os seguintes elementos definidos abaixo:
+
+-   <div>
+
+    | Termos        | Sinônimos                             | Descrição                                                                                                                                                                                   |
+    |--------------------|--------------------------|--------------------------|
+    | Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados                                                                                                                                                        |
+    | Variável      | Coluna, *column*,Cabeçalho            | Onde os dados (valores, registos ou observações) são armazenados e que é utilizado durante a análise                                                                                        |
+    | Linha         | *row*, Observação, Registro, Valor    | São dados de diferentes tipos (números, datas, textos, etc                                                                                                                                  |
+    | Função        | Verbo, Comando, Ação                  | São ordens dadas ao software R, para que ele execute uma ação necessária para sua análise                                                                                                   |
+    | Argumento     | Parâmetros                            | Criar uma personalização de características para executar um comando (cores, tamanhos, caracteres, etc)                                                                                     |
+    | Output        | Resultado                             | São as saídas oriundas de uma ação solicitada, ou seja, tudo que queremos que nosso código no R retorne para nós, podendo ser no formato de textos, tabelas, gráficos, mapas, imagens, etc. |
 
 ## Bancos de dados (*Dataframes*)
 
-Bancos de dados, ou *dataframes* são dados organizados em duas dimensões, linhas e colunas.
+-   Bancos de dados, ou *dataframes* são dados organizados em duas dimensões, linhas e colunas.
 
-Em um *dataframe* cada coluna representa uma variável e cada linha uma observação.
+-   Em um *dataframe* cada coluna representa uma variável e cada linha uma observação.
 
-![Tabela com dados municipais](Tabela_dados_municipios.png)
+-   As colunas tem como características:
 
-As colunas tem como características:
+    -   são visualizadas verticalmente na tela
 
--   são visualizadas verticalmente na tela
+    -   cada coluna é única
 
--   cada coluna é única
+    -   contêm dados do mesmo tipo (texto, número...)
 
--   contêm dados do mesmo tipo (texto, número...)
+    -   são mencionadas pelos nomes, que aparecem na parte superior como títulos, os cabeçalhos
 
--   são mencionadas pelos nomes, que aparecem na parte superior como títulos, os cabeçalhos
+## Bancos de dados (*Dataframes*)
 
-As linhas (observações, valores ou registros) tem como características:
+-   As linhas (observações, valores ou registros) tem como características:
 
--   são visualizadas horizontalmente na tela
+    -   são visualizadas horizontalmente na tela
 
--   podem conter um conjunto de tipos de dados (números, textos, datas...) para cada registro
+    -   podem conter um conjunto de tipos de dados (números, textos, datas...) para cada registro
 
-O primeiro passo para a análise de dados é importar os dados.
+-   O primeiro passo para a análise de dados é importar os dados.
 
 ## Importando dados
 
@@ -105,8 +111,114 @@ O primeiro passo para a análise de dados é importar os dados.
     if(!require(readr)) install.packages("readr")
     ```
 
-    ```
+    ```         
     library (readr)
     ```
-4. Faça comentários no seu código para explicar os comando acima
 
+    ```         
+    dados <- read_csv2(file = "Banco_de_dados_csv.csv")
+    ```
+
+4.  Faça comentários no seu código para explicar os comando acima
+
+## Importando arquivos no formato Microssoft Excel
+
+```         
+if(!require(readxl)) install.packages("readxl")
+```
+
+```         
+library(readxl)
+```
+
+```         
+dados <- read_excel("Banco_de_dados.xlsx",
+ sheet = "Dados",
+ skip = 0)
+```
+
+## Visualizando os dados e arquivos importados
+
+-   Utilize a função *head* para visualizar as primeiras linhas dos **dados**
+
+    ```         
+    head(dados)
+    ```
+
+### 
+
+-   Observe o painel do *Environmet* para visualizar os arquivos.
+
+    -   Na opção *grid* temos um resumo do arquivo
+
+    -   ![](visualização_arquivos1.png)
+
+### 
+
+-   Na opção *list* podemos visualizar as variáveis
+
+    -   ![](visualização_arquivos2.png)
+
+### Modificando os nomes das variávies
+
+-   Muitas vezes os bancos de dados possuem tem variáveis com nomes que não são adequados para a contrução de scripts
+
+-   O ideal é gerar uma padronização, utilizando nomes curtos e sem espaços
+
+-   Visualize os nomes das variáveis do banco de dados com a função *names()*
+
+    -   `names(dados)`
+
+### Modificando os nomes das variávies
+
+-   Agora vamos utilizar a função *rename()* do pacote *tidyverse*
+
+-   O *tidyverse* é um metapacote que segue uma filosofia de design, gramática e estruturas de ddos em comum para que diversos pacotes úteis para a ciência de dados possam ser utilizados em cojunto
+
+    -   ![](tidyverse.png)
+
+    -   ![](tipos_variaveis.png)
+
+### Modificando os nomes das variávies
+
+-   Vamos instalar e carregar os pacotes do *tidyverse*
+
+    -   `if(!require(tidyverse)) install.packages("tidyverse")`
+
+    -   `library(tidyverse)`
+
+    -   `dados <- rename(dados, NutriCuidaMedicBasic = 'Nutrição e Cuidados Médicos Básicos)`
+
+## Tipos de variáveis
+
+-   Os contéudos presentes nas variáveis (colunas) podem conter qualquer característica ou atributo coletado na prática contábil, como valores referentes a empresas, clientes e fornecedores. Tudo isso pode ser chamado de **variável**.
+
+-   As variáveis podem ser classificadas a partir do tipo de dados que armazenam
+
+    -   **Quantitativas**: armazenam dados de medidas como um número
+
+    -   **Qualitativas**: registram caracterísicas não mensuráveis, como textos
+
+## Tipos de variáveis
+
+![](tipos_variaveis.png)
+
+## Tipos de variáveis
+
+-   Os fatores (*factor*) são um tipo de objeto em que as categorias são chamadas *levels* (níveis ou hierarquias) e podem possuir um rótulo para cada categoria, chamado de *label* (nome ou rótulo).
+
+-   Importante: ao importarmos os dados, nem sempre cada variável foi classificada corretamente
+
+## Tipos de variáveis
+
+-   Para inspecionar o tipo de variável vamos utilizar a função *sapply().* Os principais argumentos desta função são:
+
+    -   **X**: representa o banco de dados a ser analisado
+
+    -   **FUN**: aquilo que queremos visualizar ou saber de cada variável (coluna) do banco de dados
+
+    -   `r sapply(X = dados, FUN = "typeof")`
+
+-   Uma outra forma é utilizando a função *class()*
+
+    -   `class(dados$nome_da_variavel)`
