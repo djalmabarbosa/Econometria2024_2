@@ -30,28 +30,92 @@ editor: visual
 
     -   acompanhamento
 
-### Exemplo de dados
+## 
 
--   Utilizaremos os dados da tabela abaixo como exemplo ao longo da disciplina.
+-   A análise de dados é realizada pela escrita de *scripts*
 
-    -   ![](Tabela_dados_municipios.png)
+-   Em geral os *scripts* possuem os seguintes elementos:
 
--   Contruiremos roteiros (*scripts*) com comandos em R.
+###  {.smaller}
 
--   As linhas de código irão conter os seguintes elementos definidos abaixo:
+| Termos        | Sinônimos                             | Descrição                                                                                                                             |
+|--------------------|--------------------------|--------------------------|
+| Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados                                                                                                  |
+| Variável      | Coluna, *column*,Cabeçalho            | Onde os dados (valores, registos ou observações) são armazenados e que é utilizado durante a análise                                  |
+| Linha         | *row*, Observação, Registro, Valor    | São dados de diferentes tipos (números, datas, textos, etc                                                                            |
+| **Função**    | Verbo, Comando, Ação                  | São ordens dadas ao software R, para que ele execute uma ação necessária para sua análise                                             |
+| Argumento     | Parâmetros                            | Criar uma personalização de características para executar um comando (cores, tamanhos, caracteres, etc)                               |
+| Output        | Resultado                             | São as saídas oriundas de uma ação solicitada, ou seja, tudo que queremos que nosso código no R retorne para nós, em qualquer formato |
 
--   <div>
+## 
 
-    | Termos        | Sinônimos                             | Descrição                                                                                                                                                                                   |
-    |--------------------|--------------------------|--------------------------|
-    | Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados                                                                                                                                                        |
-    | Variável      | Coluna, *column*,Cabeçalho            | Onde os dados (valores, registos ou observações) são armazenados e que é utilizado durante a análise                                                                                        |
-    | Linha         | *row*, Observação, Registro, Valor    | São dados de diferentes tipos (números, datas, textos, etc                                                                                                                                  |
-    | Função        | Verbo, Comando, Ação                  | São ordens dadas ao software R, para que ele execute uma ação necessária para sua análise                                                                                                   |
-    | Argumento     | Parâmetros                            | Criar uma personalização de características para executar um comando (cores, tamanhos, caracteres, etc)                                                                                     |
-    | Output        | Resultado                             | São as saídas oriundas de uma ação solicitada, ou seja, tudo que queremos que nosso código no R retorne para nós, podendo ser no formato de textos, tabelas, gráficos, mapas, imagens, etc. |
+::: callout-note
+### Funções
+
+-   O R é uma linguagem funcional
+
+-   Funções vêm associadas a parênteses '( )', onde colocamos os *argumentos da função*.
+
+-   Exemplos da matemática: $y = f(x)$, $z = f(x,y)$ ...
+
+-   A função mais simples no R é a criação de um conjunto de valores (*vetor*)
+
+    ```{r, echo=TRUE}
+    x <- c(1,1,2,3,5,8)
+    ```
+:::
 
 ## Bancos de dados (*Dataframes*)
+
+```{r criação do banco de dados simulado, eval=FALSE}
+# Carregar o pacote tidyverse
+library(tidyverse)
+
+# Definir o número de observações
+n <- 20000
+
+# Criar um dataframe com 15 características, incluindo uma variável ordinal
+set.seed(123) # Para reprodutibilidade
+dados <- tibble(
+  'Nome da Empresa' = paste0("emp", 1:n),
+  numero_de_funcionarios = round(rnorm(n, mean = 50, sd = 10)), # Normalmente distribuída e arredondada para inteiro
+  receita_anual = rnorm(n, mean = 100, sd = 20), # Normalmente distribuída
+  setor_de_atuacao = sample(c("agricultura", "pecuaria", "agroindustria", "comercio_de_insumos"), n, replace = TRUE), # Qualitativa
+  localizacao = sample(c("norte", "nordeste", "centro-oeste", "sudeste", "sul"), n, replace = TRUE), # Qualitativa
+  anos_de_operacao = rnorm(n, mean = 30, sd = 5), # Normalmente distribuída
+  satisfacao_dos_funcionarios = rnorm(n, mean = 7, sd = 1.5), # Normalmente distribuída
+  taxa_de_crescimento_anual = rexp(n, rate = 0.1), # Exponencial (assimétrica)
+  investimento_em_pesquisa_e_desenvolvimento = rexp(n, rate = 0.05), # Exponencial (assimétrica)
+  presenca_internacional = sample(c("sim", "nao"), n, replace = TRUE), # Qualitativa
+  indice_de_sustentabilidade = rnorm(n, mean = 6, sd = 2), # Normalmente distribuída
+  numero_de_produtos_servicos = rpois(n, lambda = 10), # Distribuição Poisson (assimétrica)
+  participacao_de_mercado = rexp(n, rate = 0.2), # Exponencial (assimétrica)
+  tipo_de_propriedade = sample(c("privada", "publica", "mista"), n, replace = TRUE), # Qualitativa
+  indice_de_inovacao = rnorm(n, mean = 5, sd = 1.5), # Normalmente distribuída
+  nivel_de_satisfacao_do_cliente = factor(sample(c("baixo", "medio", "alto"), n, replace = TRUE), levels = c("baixo", "medio", "alto"), ordered = TRUE) # Qualitativa ordinal
+)
+
+# Função para adicionar valores ausentes com variação
+adicionar_na <- function(x, perc_na_min = 0.01, perc_na_max = 0.05) {
+  perc_na <- runif(1, perc_na_min, perc_na_max) # Gera uma porcentagem aleatória entre os limites
+  n_na <- round(length(x) * perc_na)
+  na_indices <- sample(1:length(x), n_na)
+  x[na_indices] <- NA
+  return(x)
+}
+
+# Aplicar a função para adicionar valores ausentes a cada variável
+dados <- dados %>%
+  mutate(across(everything(), ~ adicionar_na(.x, perc_na_min = 0.01, perc_na_max = 0.05)))
+
+write.csv(dados, "dados_empresas.csv", row.names = FALSE)
+
+library(writexl)
+write_xlsx(dados, "dados_empresas.xlsx")
+
+write_xlsx(list("Aba 1" = dados, "Aba 2" = data.frame()), "dados_empresas.xlsx")
+
+```
 
 -   Bancos de dados, ou *dataframes* são dados organizados em duas dimensões, linhas e colunas.
 
@@ -67,17 +131,17 @@ editor: visual
 
     -   são mencionadas pelos nomes, que aparecem na parte superior como títulos, os cabeçalhos
 
-## Bancos de dados (*Dataframes*)
+## 
 
 -   As linhas (observações, valores ou registros) tem como características:
 
     -   são visualizadas horizontalmente na tela
 
-    -   podem conter um conjunto de tipos de dados (números, textos, datas...) para cada registro
+    -   podem conter diversos tipos de dados (números, textos, datas...) para cada registro
 
--   O primeiro passo para a análise de dados é importar os dados.
+-   O primeiro passo para a análise de dados é importar os dados
 
-## Importando dados
+### Importando dados
 
 -   A linguagem R é um paradigma de **programação orientada a objetos**. Qualquer estrutura é armazenada na forma de um **objeto**, podendo ser um valor, conjunto de valores o um mesmo uma base de dados.
 
@@ -86,16 +150,6 @@ editor: visual
     -   Também podemos utilizar '=' para atribuição, mas como ele tem outros usos, pode gerar confusão.
 
         ![Atribuição de dados a um objeto no R (Fonte: Introdução à Análise de Dados no R)](atribuição.png)
-
--   Antes de importarmos os dados, temos que discutir o conceito de função
-
-### Funções no R
-
--   O R é uma linguagem funcional
-
--   Funções vêm associadas a parênteses '( )', onde colocamos os *argumentos da função*.
-
--   Exemplos da matemática: $y = f(x)$, $z = f(x,y)$ ...
 
 ### Importando arquivos no formato CSV
 
@@ -107,48 +161,38 @@ editor: visual
 
 3.  Digite:
 
-    ```         
-    if(!require(readr)) install.packages("readr")
+    ```{r, echo=TRUE}
+    if(!require(readr)) install.packages("readr") # Verifica/instala o pacote readr
+
+    library (readr) # Carrega o pacote readr
+
+    dados <- read_csv2(file = "dados_empresas.csv") # Cria o objeto 'dados'
+      
     ```
 
-    ```         
-    library (readr)
-    ```
+### Importando arquivos no formato Microssoft Excel
 
-    ```         
-    dados <- read_csv2(file = "Banco_de_dados_csv.csv")
-    ```
-
-4.  Faça comentários no seu código para explicar os comando acima
-
-## Importando arquivos no formato Microssoft Excel
-
-```         
+```{r, echo=TRUE}
 if(!require(readxl)) install.packages("readxl")
-```
 
-```         
 library(readxl)
-```
 
-```         
-dados <- read_excel("Banco_de_dados.xlsx",
- sheet = "Dados",
+dados <- read_excel("dados_empresas.xlsx",
+ sheet = "Aba 1",
  skip = 0)
 ```
 
-## Visualizando os dados e arquivos importados
+### Visualizando os dados e arquivos importados
 
 -   Utilize a função *head* para visualizar as primeiras linhas dos **dados**
 
-    ```         
+    ```{r, echo=TRUE}
     head(dados)
     ```
 
 ### 
 
 -   Observe o painel do *Environmet* para visualizar os arquivos.
-
     -   Na opção *grid* temos um resumo do arquivo
 
     -   ![](visualização_arquivos1.png)
@@ -161,35 +205,69 @@ dados <- read_excel("Banco_de_dados.xlsx",
 
 ### Modificando os nomes das variávies
 
--   Muitas vezes os bancos de dados possuem tem variáveis com nomes que não são adequados para a contrução de scripts
+-   Muitas vezes os bancos de dados possuem variáveis com nomes que não são adequados para a contrução de scripts, contendo espaços, letras maiúsculas, caracteres especiais, etc.
 
--   O ideal é gerar uma padronização, utilizando nomes curtos e sem espaços
+-   O ideal é gerar uma padronização, utilizando nomes sugestivos, sem espaços e com letra minúscula
 
--   Visualize os nomes das variáveis do banco de dados com a função *names()*
+    -   É melhor usar um nome mais longo do que encurtar demais e perder a informação da variável
 
-    -   `names(dados)`
+    -   Utilize *underline* ( \_ ) para juntar palavras
 
-### Modificando os nomes das variávies
+### 
 
--   Agora vamos utilizar a função *rename()* do pacote *tidyverse*
+Vamos visualizar os nomes das variáveis do banco de dados com a função *names()*
 
--   O *tidyverse* é um metapacote que segue uma filosofia de design, gramática e estruturas de ddos em comum para que diversos pacotes úteis para a ciência de dados possam ser utilizados em cojunto
+O que podemos observar?
 
-    -   ![](tidyverse.png)
+```{r, echo=TRUE}
 
-    -   ![](tipos_variaveis.png)
+names(dados)
 
-### Modificando os nomes das variávies
+```
+
+### 
+
+-   Vamos utilizar o pacote *tidyverse* para corrigir o problema\
+
+### Tidyverse
+
+::: panel-tabset
+### Filosofia
+
+```{r Tidyverse}
+knitr::include_graphics("tidyverse.png")
+```
+
+### Pacotes do Tidyverse
+
+```{r Pacotes do Tidyverse}
+knitr::include_graphics("pacotes_tidyverse.png")
+```
+:::
+
+::: notes
+O *tidyverse* é um metapacote que segue uma filosofia de design, gramática e estruturas de ddos em comum para que diversos pacotes úteis para a ciência de dados possam ser utilizados em cojunto
+:::
+
+### 
 
 -   Vamos instalar e carregar os pacotes do *tidyverse*
 
-    -   `if(!require(tidyverse)) install.packages("tidyverse")`
+```{r, eval=FALSE, echo=TRUE}
+if(!require(tidyverse)) install.packages("tidyverse")
 
-    -   `library(tidyverse)`
+library(tidyverse)
 
-    -   `dados <- rename(dados, NutriCuidaMedicBasic = 'Nutrição e Cuidados Médicos Básicos)`
 
-## Tipos de variáveis
+```
+
+-   Agora vamos utilizar a função *rename ( )*
+
+```{r}
+dados <- rename(dados, nome_empresa = 'Nome da Empresa')
+```
+
+### Tipos de variáveis
 
 -   Os contéudos presentes nas variáveis (colunas) podem conter qualquer característica ou atributo coletado na prática contábil, como valores referentes a empresas, clientes e fornecedores. Tudo isso pode ser chamado de **variável**.
 
@@ -199,17 +277,17 @@ dados <- read_excel("Banco_de_dados.xlsx",
 
     -   **Qualitativas**: registram caracterísicas não mensuráveis, como textos
 
-## Tipos de variáveis
+### 
 
 ![](tipos_variaveis.png)
 
-## Tipos de variáveis
+### 
 
 -   Os fatores (*factor*) são um tipo de objeto em que as categorias são chamadas *levels* (níveis ou hierarquias) e podem possuir um rótulo para cada categoria, chamado de *label* (nome ou rótulo).
 
 -   Importante: ao importarmos os dados, nem sempre cada variável foi classificada corretamente
 
-## Tipos de variáveis
+### 
 
 -   Para inspecionar o tipo de variável vamos utilizar a função *sapply().* Os principais argumentos desta função são:
 
