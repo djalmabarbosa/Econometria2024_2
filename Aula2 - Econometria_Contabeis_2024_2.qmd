@@ -39,7 +39,7 @@ editor: visual
 ###  {.smaller}
 
 | Termos        | Sinônimos                             | Descrição                                                                                                                             |
-|--------------------|--------------------------|--------------------------|
+|--------------|--------------|---------------------------------------------|
 | Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados                                                                                                  |
 | Variável      | Coluna, *column*,Cabeçalho            | Onde os dados (valores, registos ou observações) são armazenados e que é utilizado durante a análise                                  |
 | Linha         | *row*, Observação, Registro, Valor    | São dados de diferentes tipos (números, datas, textos, etc                                                                            |
@@ -72,7 +72,7 @@ editor: visual
 library(tidyverse)
 
 # Definir o número de observações
-n <- 20000
+n <- 20428
 
 # Criar um dataframe com 15 características, incluindo uma variável ordinal
 set.seed(123) # Para reprodutibilidade
@@ -86,7 +86,7 @@ dados <- tibble(
   satisfacao_dos_funcionarios = rnorm(n, mean = 7, sd = 1.5), # Normalmente distribuída
   taxa_de_crescimento_anual = rexp(n, rate = 0.1), # Exponencial (assimétrica)
   investimento_em_pesquisa_e_desenvolvimento = rexp(n, rate = 0.05), # Exponencial (assimétrica)
-  presenca_internacional = sample(c("sim", "nao"), n, replace = TRUE), # Qualitativa
+  presenca_internacional = sample(c(1, 0), n, replace = TRUE), # Qualitativa
   indice_de_sustentabilidade = rnorm(n, mean = 6, sd = 2), # Normalmente distribuída
   numero_de_produtos_servicos = rpois(n, lambda = 10), # Distribuição Poisson (assimétrica)
   participacao_de_mercado = rexp(n, rate = 0.2), # Exponencial (assimétrica)
@@ -246,14 +246,14 @@ knitr::include_graphics("pacotes_tidyverse.png")
 :::
 
 ::: notes
-O *tidyverse* é um metapacote que segue uma filosofia de design, gramática e estruturas de ddos em comum para que diversos pacotes úteis para a ciência de dados possam ser utilizados em cojunto
+O *tidyverse* é um metapacote que segue uma filosofia de design, gramática e estruturas de dados em comum para que diversos pacotes úteis para a ciência de dados possam ser utilizados em cojunto
 :::
 
 ### 
 
 -   Vamos instalar e carregar os pacotes do *tidyverse*
 
-```{r, eval=FALSE, echo=TRUE}
+```{r, echo=TRUE}
 if(!require(tidyverse)) install.packages("tidyverse")
 
 library(tidyverse)
@@ -295,8 +295,36 @@ dados <- rename(dados, nome_empresa = 'Nome da Empresa')
 
     -   **FUN**: aquilo que queremos visualizar ou saber de cada variável (coluna) do banco de dados
 
-    -   `r sapply(X = dados, FUN = "typeof")`
+        ```{r, eval = FALSE, echo = TRUE}
+        sapply(X = dados, FUN = "typeof")
+        ```
 
--   Uma outra forma é utilizando a função *class()*
+    -   Uma outra forma é utilizando a função *class()*
 
-    -   `class(dados$nome_da_variavel)`
+        ```{r, eval = FALSE, echo = TRUE}
+        class(dados$anos_de_operacao)
+        ```
+
+```{r}
+class(dados$anos_de_operacao)
+```
+
+
+### 
+
+Vamos transformr a variável *presenca_internacional* em um fator:
+
+```{r}
+
+dados$presenca_internacional_fct <- factor(
+  x = dados$presenca_internacional,
+  levels = c("0","1"),
+  labels = c(
+    "Sem presença internacional",
+    "Com presença internacional"
+  )
+)
+
+
+```
+
