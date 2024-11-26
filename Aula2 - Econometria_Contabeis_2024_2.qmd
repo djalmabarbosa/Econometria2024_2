@@ -39,7 +39,7 @@ editor: visual
 ###  {.smaller}
 
 | Termos        | Sinônimos                             | Descrição                                                                                                                             |
-|--------------|--------------|---------------------------------------------|
+|-----------------|-----------------|--------------------------------------|
 | Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados                                                                                                  |
 | Variável      | Coluna, *column*,Cabeçalho            | Onde os dados (valores, registos ou observações) são armazenados e que é utilizado durante a análise                                  |
 | Linha         | *row*, Observação, Registro, Valor    | São dados de diferentes tipos (números, datas, textos, etc                                                                            |
@@ -309,7 +309,6 @@ dados <- rename(dados, nome_empresa = 'Nome da Empresa')
 class(dados$anos_de_operacao)
 ```
 
-
 ### 
 
 Vamos transformr a variável *presenca_internacional* em um fator:
@@ -328,3 +327,40 @@ dados$presenca_internacional_fct <- factor(
 
 ```
 
+## Salvando o novo banco de dados
+
+-   Para salvar os dados no formato do R, podemos utilizar a função '*save ( )'*
+
+```{r}
+save(dados, file = "dados_empresas2.RData")
+```
+
+-   Utilizando o formato .xlsx (exercício)
+
+## Buscando ajuda (help!)
+
+Algumas das principais formas de buscar ajuda são:
+
+1.  O *Help* ou documentação do R
+
+    ```{r}
+    help(sqrt)
+    ```
+
+2.  Google
+
+3.  Foruns
+
+    1.  *Stackoferflow* (<https://pt.stackoverflow.com>)
+
+    2.  Posit Community (<https://forum.posit.co/>)
+
+    3.  GitHub (<https://github.com/>)
+
+4.  IA
+
+    1.  Microssoft co-pilot
+
+    2.  Chat GPT
+
+    3.  Gemini
