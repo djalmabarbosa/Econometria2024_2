@@ -39,7 +39,7 @@ editor: visual
 ###  {.smaller}
 
 | Termos        | Sinônimos                             | Descrição                                                                                                                             |
-|-----------------|-----------------|--------------------------------------|
+|---------------|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
 | Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados                                                                                                  |
 | Variável      | Coluna, *column*,Cabeçalho            | Onde os dados (valores, registos ou observações) são armazenados e que é utilizado durante a análise                                  |
 | Linha         | *row*, Observação, Registro, Valor    | São dados de diferentes tipos (números, datas, textos, etc                                                                            |
@@ -78,21 +78,21 @@ n <- 20428
 set.seed(123) # Para reprodutibilidade
 dados <- tibble(
   'Nome da Empresa' = paste0("emp", 1:n),
-  numero_de_funcionarios = round(rnorm(n, mean = 50, sd = 10)), # Normalmente distribuída e arredondada para inteiro
+  numero_funcionarios = round(rnorm(n, mean = 50, sd = 10)), # Normalmente distribuída e arredondada para inteiro
   receita_anual = rnorm(n, mean = 100, sd = 20), # Normalmente distribuída
-  setor_de_atuacao = sample(c("agricultura", "pecuaria", "agroindustria", "comercio_de_insumos"), n, replace = TRUE), # Qualitativa
+  setor_atuacao = sample(c("agricultura", "pecuaria", "agroindustria", "comercio_de_insumos"), n, replace = TRUE), # Qualitativa
   localizacao = sample(c("norte", "nordeste", "centro-oeste", "sudeste", "sul"), n, replace = TRUE), # Qualitativa
-  anos_de_operacao = rnorm(n, mean = 30, sd = 5), # Normalmente distribuída
-  satisfacao_dos_funcionarios = rnorm(n, mean = 7, sd = 1.5), # Normalmente distribuída
-  taxa_de_crescimento_anual = rexp(n, rate = 0.1), # Exponencial (assimétrica)
-  investimento_em_pesquisa_e_desenvolvimento = rexp(n, rate = 0.05), # Exponencial (assimétrica)
+  anos_operacao = rnorm(n, mean = 30, sd = 5), # Normalmente distribuída
+  satisfacao_funcionarios = rnorm(n, mean = 7, sd = 1.5), # Normalmente distribuída
+  taxa_crescimento_anual = rexp(n, rate = 0.1), # Exponencial (assimétrica)
+  investimento_p_e_d = rexp(n, rate = 0.05), # Exponencial (assimétrica)
   presenca_internacional = sample(c(1, 0), n, replace = TRUE), # Qualitativa
-  indice_de_sustentabilidade = rnorm(n, mean = 6, sd = 2), # Normalmente distribuída
-  numero_de_produtos_servicos = rpois(n, lambda = 10), # Distribuição Poisson (assimétrica)
-  participacao_de_mercado = rexp(n, rate = 0.2), # Exponencial (assimétrica)
-  tipo_de_propriedade = sample(c("privada", "publica", "mista"), n, replace = TRUE), # Qualitativa
-  indice_de_inovacao = rnorm(n, mean = 5, sd = 1.5), # Normalmente distribuída
-  nivel_de_satisfacao_do_cliente = factor(sample(c("baixo", "medio", "alto"), n, replace = TRUE), levels = c("baixo", "medio", "alto"), ordered = TRUE) # Qualitativa ordinal
+  indice_sustentabilidade = rnorm(n, mean = 6, sd = 2), # Normalmente distribuída
+  numero_produtos = rpois(n, lambda = 10), # Distribuição Poisson (assimétrica)
+  participacao_mercado = rexp(n, rate = 0.2), # Exponencial (assimétrica)
+  tipo_propriedade = sample(c("privada", "publica", "mista"), n, replace = TRUE), # Qualitativa
+  indice_inovacao = rnorm(n, mean = 5, sd = 1.5), # Normalmente distribuída
+  nivel_satisfacao_cliente = factor(sample(c("baixo", "medio", "alto"), n, replace = TRUE), levels = c("baixo", "medio", "alto"), ordered = TRUE) # Qualitativa ordinal
 )
 
 # Função para adicionar valores ausentes com variação
@@ -187,7 +187,12 @@ dados <- read_excel("dados_empresas.xlsx",
 -   Utilize a função *head* para visualizar as primeiras linhas dos **dados**
 
     ```{r, echo=TRUE}
+
+    dados
+
     head(dados)
+
+
     ```
 
 ### 
@@ -261,9 +266,15 @@ library(tidyverse)
 
 ```
 
+-   Vamos dar mais uma olhada nos dados, agora com a função *glimpse ()*, do tidyverse:
+
+```{r, echo=TRUE}
+glimpse(dados)
+```
+
 -   Agora vamos utilizar a função *rename ( )*
 
-```{r}
+```{r, echo=TRUE}
 dados <- rename(dados, nome_empresa = 'Nome da Empresa')
 ```
 
@@ -305,7 +316,7 @@ dados <- rename(dados, nome_empresa = 'Nome da Empresa')
         class(dados$anos_de_operacao)
         ```
 
-```{r}
+```{r, echo=TRUE}
 class(dados$anos_de_operacao)
 ```
 
@@ -313,7 +324,7 @@ class(dados$anos_de_operacao)
 
 Vamos transformr a variável *presenca_internacional* em um fator:
 
-```{r}
+```{r, echo=TRUE}
 
 dados$presenca_internacional_fct <- factor(
   x = dados$presenca_internacional,
@@ -331,7 +342,7 @@ dados$presenca_internacional_fct <- factor(
 
 -   Para salvar os dados no formato do R, podemos utilizar a função '*save ( )'*
 
-```{r}
+```{r, echo=TRUE}
 save(dados, file = "dados_empresas2.RData")
 ```
 
@@ -343,7 +354,7 @@ Algumas das principais formas de buscar ajuda são:
 
 1.  O *Help* ou documentação do R
 
-    ```{r}
+    ```{r, echo=TRUE}
     help(sqrt)
     ```
 

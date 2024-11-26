@@ -1,0 +1,99 @@
+---
+title: "Econometria"
+subtitle: "Organização dos Dados | Prof. Djalma Barbosa"
+format: 
+    revealjs:
+      slide-number: true
+      slide-level: 3
+      logo: logoUfr.png
+      incremental: true
+      scrollable: true
+      theme: simple
+      code-fold: false
+      self-contained: true
+editor: visual
+---
+
+### Avaliando a consistência dos dados
+
+-   A avaliação da consistência dos dados é uma etapa rotineira na Ciência de Dados
+-   O que verificamos?
+    -   O número de linhas e colunas era o esparado?
+    -   Os nomes das variáveis vieram como esperado?
+    -   Quais são os tipos de variáveis que tenho no banco? Eles estão corretos?
+
+### 
+
+-   Fazendo a leitura dos dados
+
+    ```{r, echo=TRUE}
+    load("dados_empresas2.RData")
+    ```
+
+-   Dando uma olhada no banco de dados
+
+    ```{r, echo=TRUE}
+    library(tidyverse)
+    glimpse(dados)
+    ```
+
+### Selecionando variáveis para análise
+
+-   Utilizaremos a função *select ( )* do *tidyverse*
+
+-   Esta função tem dois argumentos principais
+
+    1.  os dados utilizados
+    2.  o nome das colunas que deve ser selecionadas
+
+    ```{r, echo=TRUE}
+    dados_menor <- select(dados, nome_empresa, setor_atuacao,indice_sustentabilidade)
+    ```
+
+-   Vamos utilizar a função *head ( )* para visualizar as primeiras linhas da nova tabela
+
+    ```{r, echo=TRUE}
+    head(dados_menor)
+    ```
+
+### Simplificando o fluxo de análises
+
+-   Muitas vezes reaproveitamos o resultado de uma análise (pedaço de código) para a análise seguinte
+
+-   i.e, utilizamos o *output* de um código anterior como *argumento* principal para a próxima análise
+
+-   Utilizando pipes na primeira parte do código do slide anterior:
+
+    ```{r, echo=TRUE}
+    dados_menor <- dados |>
+      select(nome_empresa, setor_atuacao,indice_sustentabilidade,nivel_satisfacao_cliente,presenca_internacional_fct)
+    ```
+
+-   Unindo as duas partes de código:
+
+    ```{r, echo=TRUE}
+    dados_menor <- dados |>
+      select(nome_empresa, setor_atuacao,indice_sustentabilidade,nivel_satisfacao_cliente,presenca_internacional_fct) |>
+      head() |>
+      print()
+    ```
+
+### Excluindo colunas
+
+```{r, echo=TRUE}
+dados_menor_2 <- dados_menor |> 
+  select(-setor_atuacao) |>
+  head() |>
+  print()
+```
+
+### Inserindo novas colunas
+
+```{r, echo=TRUE}
+dados_menor_2 <- dados_menor |>
+  select(nome_empresa, indice_sustentabilidade) |>
+  mutate(indice_sustentabilidade_log = log(indice_sustentabilidade)) |>
+  head() |>
+  print()
+  
+```
