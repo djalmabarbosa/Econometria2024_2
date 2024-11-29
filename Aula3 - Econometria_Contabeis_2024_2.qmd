@@ -14,7 +14,7 @@ format:
 editor: visual
 ---
 
-### Avaliando a consistência dos dados
+## 1. Avaliando a consistência dos dados
 
 -   A avaliação da consistência dos dados é uma etapa rotineira na Ciência de Dados
 -   O que verificamos?
@@ -37,32 +37,34 @@ editor: visual
     glimpse(dados)
     ```
 
-### Selecionando variáveis para análise
+### Selecionando variáveis para análise {.smaller}
 
 -   Utilizaremos a função *select ( )* do *tidyverse*
 
 -   Esta função tem dois argumentos principais
 
     1.  os dados utilizados
-    2.  o nome das colunas que deve ser selecionadas
+    2.  o nome das colunas que devem ser selecionadas
 
     ```{r, echo=TRUE}
-    dados_menor <- select(dados, nome_empresa, setor_atuacao,indice_sustentabilidade)
+    dados_menor <- select(dados, nome_empresa, setor_atuacao, indice_sustentabilidade)
     ```
 
 -   Vamos utilizar a função *head ( )* para visualizar as primeiras linhas da nova tabela
 
-    ```{r, echo=TRUE}
-    head(dados_menor)
-    ```
+    -   
 
-### Simplificando o fluxo de análises
+        ```{r, echo=TRUE}
+        head(dados_menor)
+        ```
+
+### Simplificando o fluxo de análises {.smaller}
 
 -   Muitas vezes reaproveitamos o resultado de uma análise (pedaço de código) para a análise seguinte
 
 -   i.e, utilizamos o *output* de um código anterior como *argumento* principal para a próxima análise
 
--   Utilizando pipes na primeira parte do código do slide anterior:
+-   Conseguimos este comportamento utilizando *pipes*:
 
     ```{r, echo=TRUE}
     dados_menor <- dados |>
@@ -77,6 +79,8 @@ editor: visual
       head() |>
       print()
     ```
+
+## 2. Preparando as variáveis para análise de dados
 
 ### Excluindo colunas
 
@@ -106,6 +110,11 @@ dados_menor_2 <- dados_menor |>
 
 colnames(dados)
 
+```
+
+### 
+
+```{r, echo=TRUE}
 # Vamos instalar o pacote janitor para usar a função clean_names()
 
 if(!require(janitor)) install.packages("janitor") 
@@ -114,8 +123,6 @@ library (janitor)
 dados_novo <- clean_names(dados)
 
 colnames(dados)
-
-
 ```
 
 ### Filtrando colunas
@@ -126,21 +133,21 @@ colnames(dados)
 
 -   Utilizaremos a função *filter( )*
 
-### 
+### Operadores lógicos
 
 ![](operadores_logicos.png)
 
-\###
+###  {.smaller}
 
-Vamos praticar. Vamos filtrar, na base de dados original, as empresas que atuam no Centro-Oeste e que ofertam pelo menos 5 produtos
+-   Vamos praticar. Vamos filtrar, na base de dados original, as empresas que atuam no Centro-Oeste e que ofertam pelo menos 5 produtos
 
-```{r, echo=TRUE}
+    -   
 
-dados |> 
-  filter(localizacao == "centro-oeste", numero_produtos >= 5)
+        ```{r, echo=TRUE}
 
-
-```
+        dados |> 
+          filter(localizacao == "centro-oeste", numero_produtos >= 5)
+        ```
 
 ### 
 
@@ -161,13 +168,13 @@ dados |>
   select(nome_empresa,localizacao)
 ```
 
-### Resumindo colunas
+### Resumindo colunas {.smaller}
 
 -   Muitas vezes precisamos agrupar observações na nossa análise
 
 -   Para isto podemos utilizar o verbo *group_by()*
 
--   Vamos agrupar as observações por *tipo de propriedade*, e depois contar quantas são
+-   Vamos agrupar as observações por *tipo de propriedade* e, depois, contar quantas são:
 
     ```{r, echo = TRUE}
 
@@ -196,17 +203,17 @@ dados |>
 
 -   Vamos perguntar à IA o que pode estar acontecendo de errado?
 
--   
+### 
 
-    ```{r, echo = TRUE}
+```{r, echo = TRUE}
 
-    dados |>
-      group_by(tipo_propriedade) |>
-      summarise(
-        n_propriedades = n(),
-        media_receita = mean(receita_anual, na.rm = TRUE)
-      )
-    ```
+dados |>
+  group_by(tipo_propriedade) |>
+  summarise(
+    n_propriedades = n(),
+    media_receita = mean(receita_anual, na.rm = TRUE)
+  )
+```
 
 ### Modificando a ordem das colunas
 
