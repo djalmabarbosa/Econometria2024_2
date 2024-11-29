@@ -89,7 +89,7 @@ dados <- tibble(
   presenca_internacional = sample(c(1, 0), n, replace = TRUE), # Qualitativa
   indice_sustentabilidade = rnorm(n, mean = 6, sd = 2), # Normalmente distribuída
   numero_produtos = rpois(n, lambda = 10), # Distribuição Poisson (assimétrica)
-  participacao_mercado = rexp(n, rate = 0.2), # Exponencial (assimétrica)
+  'PARTICIPACAO_NO_MERCADO' = rexp(n, rate = 0.2), # Exponencial (assimétrica)
   tipo_propriedade = sample(c("privada", "publica", "mista"), n, replace = TRUE), # Qualitativa
   indice_inovacao = rnorm(n, mean = 5, sd = 1.5), # Normalmente distribuída
   nivel_satisfacao_cliente = factor(sample(c("baixo", "medio", "alto"), n, replace = TRUE), levels = c("baixo", "medio", "alto"), ordered = TRUE) # Qualitativa ordinal
@@ -334,7 +334,6 @@ dados$presenca_internacional_fct <- factor(
     "Com presença internacional"
   )
 )
-
 
 ```
 

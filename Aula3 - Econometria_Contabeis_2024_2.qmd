@@ -84,7 +84,7 @@ editor: visual
 dados_menor_2 <- dados_menor |> 
   select(-setor_atuacao) |>
   head() |>
-  print()
+  print(n = 7)
 ```
 
 ### Inserindo novas colunas
@@ -96,4 +96,150 @@ dados_menor_2 <- dados_menor |>
   head() |>
   print()
   
+```
+
+### Padronizando colunas
+
+```{r, echo=TRUE}
+
+# Visualizando os nomes das variáveis
+
+colnames(dados)
+
+# Vamos instalar o pacote janitor para usar a função clean_names()
+
+if(!require(janitor)) install.packages("janitor") 
+library (janitor) 
+
+dados_novo <- clean_names(dados)
+
+colnames(dados)
+
+
+```
+
+### Filtrando colunas
+
+-   Já vimos como excluir, transformar e renomear colunas
+
+-   Vamos aprender a filtrar observações de um banco de dados
+
+-   Utilizaremos a função *filter( )*
+
+### 
+
+![](operadores_logicos.png)
+
+\###
+
+Vamos praticar. Vamos filtrar, na base de dados original, as empresas que atuam no Centro-Oeste e que ofertam pelo menos 5 produtos
+
+```{r, echo=TRUE}
+
+dados |> 
+  filter(localizacao == "centro-oeste", numero_produtos >= 5)
+
+
+```
+
+### 
+
+-   Na função filter( ), a vírgula representa o "e". Para "ou", utilizamos \| .
+
+-   Tente criar um código para filtrar, além do centro-oeste, empresas que também atuam na região sul.
+
+    Use somente este filtro.
+
+### 
+
+Também podemos utilizar o operador %in% neste caso.
+
+```{r, echo = TRUE}
+
+dados |> 
+  filter(localizacao %in% c("centro-oeste","sul")) |>
+  select(nome_empresa,localizacao)
+```
+
+### Resumindo colunas
+
+-   Muitas vezes precisamos agrupar observações na nossa análise
+
+-   Para isto podemos utilizar o verbo *group_by()*
+
+-   Vamos agrupar as observações por *tipo de propriedade*, e depois contar quantas são
+
+    ```{r, echo = TRUE}
+
+    dados |>
+      group_by(tipo_propriedade) |>
+      count(tipo_propriedade)
+    ```
+
+### 
+
+-   Outra forma de resumir colunas é utilizar a função *summarise( )* junto com a função *mutate( )*
+
+-   Vamos calcular uma média da receita anual para os três tipos de propriedade
+
+    ```{r, echo = TRUE}
+
+    dados |>
+      group_by(tipo_propriedade) |>
+      summarise(
+        n_propriedades = n(),
+        media_receita = mean(receita_anual)
+      )
+    ```
+
+-   O que pode ter acontecido?
+
+-   Vamos perguntar à IA o que pode estar acontecendo de errado?
+
+-   
+
+    ```{r, echo = TRUE}
+
+    dados |>
+      group_by(tipo_propriedade) |>
+      summarise(
+        n_propriedades = n(),
+        media_receita = mean(receita_anual, na.rm = TRUE)
+      )
+    ```
+
+### Modificando a ordem das colunas
+
+```{r, echo = TRUE}
+
+dados |>
+  group_by(tipo_propriedade) |>
+  summarise(
+    n_propriedades = n(),
+    media_receita = mean(receita_anual, na.rm = TRUE)) |>
+  arrange(desc(media_receita))
+```
+
+### Avaliando a completude dos dados
+
+```{r, echo = TRUE}
+
+if(!require(skimr)) install.packages("skimr") 
+library (skimr) 
+
+n_missing(dados$receita_anual)
+
+complete_rate(dados$receita_anual)
+
+```
+
+### Renomeando valores
+
+-   Vamos supor, que após análise crítica, concluímos que valores ausentes na variável *recieta_anual* deveriam ser substituídos por zero
+
+```{r, echo = TRUE}
+
+dados <- dados |>
+  mutate(receita_anual = replace_na(receita_anual, replace = 0))
+
 ```
