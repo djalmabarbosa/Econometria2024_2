@@ -1,6 +1,6 @@
 ---
 title: "Econometria"
-subtitle: "Visualização dos Dados | Prof. Djalma Barbosa"
+subtitle: "Visualização de Dados | Prof. Djalma Barbosa"
 format: 
     revealjs:
       slide-number: true
@@ -14,11 +14,7 @@ format:
 editor: visual
 ---
 
-<<<<<<< HEAD
 ## 3. Visualizando os dados {.smaller}
-=======
-## 1. Avaliando a consistência dos dados
->>>>>>> 48d332e5ecc65e9debb652a6974937c392ea06ed
 
 -   Vamos trabalhar com o banco de dados (*data frame*) chamado *penguins*, uma coleção retangular de variáveis (em cada coluna) e observações (nas linhas).
 
@@ -32,68 +28,13 @@ editor: visual
 
     -   Dado tabular: um conjunto de valores, cada um associado a uma variável e uma observação. Dados tabulares são *tidy* se cada valor está na sua própria "célula", cada variável está na sua própria coluna e cada observação na sua própria linha.
 
-<<<<<<< HEAD
 ## 
-=======
-### Selecionando variáveis para análise {.smaller}
->>>>>>> 48d332e5ecc65e9debb652a6974937c392ea06ed
 
 ### 3.1 Primeiros passos
 
-<<<<<<< HEAD
 ```{r, echo = TRUE}
 library(palmerpenguins)
 library(ggthemes)
-=======
--   Esta função tem dois argumentos principais
-
-    1.  os dados utilizados
-    2.  o nome das colunas que devem ser selecionadas
-
-    ```{r, echo=TRUE}
-    dados_menor <- select(dados, nome_empresa, setor_atuacao, indice_sustentabilidade)
-    ```
-
--   Vamos utilizar a função *head ( )* para visualizar as primeiras linhas da nova tabela
-
-    -   
-
-        ```{r, echo=TRUE}
-        head(dados_menor)
-        ```
-
-### Simplificando o fluxo de análises {.smaller}
-
--   Muitas vezes reaproveitamos o resultado de uma análise (pedaço de código) para a análise seguinte
-
--   i.e, utilizamos o *output* de um código anterior como *argumento* principal para a próxima análise
-
--   Conseguimos este comportamento utilizando *pipes*:
-
-    ```{r, echo=TRUE}
-    dados_menor <- dados |>
-      select(nome_empresa, setor_atuacao,indice_sustentabilidade,nivel_satisfacao_cliente,presenca_internacional_fct)
-    ```
-
--   Unindo as duas partes de código:
-
-    ```{r, echo=TRUE}
-    dados_menor <- dados |>
-      select(nome_empresa, setor_atuacao,indice_sustentabilidade,nivel_satisfacao_cliente,presenca_internacional_fct) |>
-      head() |>
-      print()
-    ```
-
-## 2. Preparando as variáveis para análise de dados
-
-### Excluindo colunas
-
-```{r, echo=TRUE}
-dados_menor_2 <- dados_menor |> 
-  select(-setor_atuacao) |>
-  head() |>
-  print(n = 7)
->>>>>>> 48d332e5ecc65e9debb652a6974937c392ea06ed
 ```
 
 Penguins data set
@@ -126,46 +67,46 @@ describe(penguins)
 
 ### 3.4 Criando um ggplot
 
-Com ggplot2, você começa o gráfico com a função *ggplot()*, que define um objeto de plotagem.
+-   Com ggplot2, você começa o gráfico com a função *ggplot()*, que define um objeto de plotagem.
 
-Então, você vai adicionando camadas.
+-   Adicionamos as camadas.
 
-O primeiro argumento de *ggplot()* é o banco de dados que será utilizado para fazer o gráfico.
+-   O primeiro argumento de *ggplot()* é o banco de dados que será utilizado para fazer o gráfico.
 
-```{r, echo = TRUE}
+    ```{r, echo = TRUE}
+    library(ggplot2)
 
-library(ggplot2)
-
-ggplot(data = penguins)
-```
+    ggplot(data = penguins)
+    ```
 
 ## 
 
 ###  {data-transition="slide"}
 
-Agora precisamos dizer como as informações dos dados serão apresentadas visualmente.
+-   Agora precisamos dizer como as informações dos dados serão apresentadas visualmente.
 
-O argumento *mapping* define como as variáveis no banco de dados serão mapeadas às propriedades visuais do gráfico (*aesthetics*).
+-   O argumento *mapping* define como as variáveis no banco de dados serão mapeadas às propriedades visuais do gráfico (*aesthetics*).
 
-```{r, echo=TRUE}
+    ```{r}
+    ggplot(
+      data = penguins,
+      mapping = aes(x = flipper_length_mm, y = body_mass_g)
+    )
+    ```
 
-ggplot(
-  data = penguins,
-  mapping = aes(x = flipper_length_mm, y = body_mass_g)
-)
-
-```
-
-<<<<<<< HEAD
 ## 
 
-###   {.smaller}
+###  {data-transition="slide"}
 
 -   Para "colocar os pinguins no gráfico", precisamos definir como representar as observações no gráfico (pontos, barras, retas...?).
 
 -   Observe o gráfico de dispersão (*scatterplot*).
 
-    ```{r,  echo = TRUE}
+-   Qual parece ser a relação entre o comprimento da nadadeira do pinguim e o seu peso?
+
+-   Observe o aviso (*warning*). Este é talvez o aviso mais comum quando utilizamos o R para ciência de dados. O ggplot e diversos outros pacotes são programados para mostrar este aviso.
+
+    ```{r}
     ggplot(
       data = penguins,
       mapping = aes(x = flipper_length_mm, y = body_mass_g)
@@ -173,25 +114,23 @@ ggplot(
       geom_point()
     ```
 
--   Qual parece ser a relação entre o comprimento da nadadeira do pinguim e o seu peso?
-
--   Observe o aviso (*warning*). Este é talvez o aviso mais comum quando utilizamos o R para ciência de dados. O ggplot e diversos outros pacotes são programados para mostrar este aviso.
-
 ## 
 
 ###  {data-transition="slide"}
 
--   Gráficos de dispersão são úteis para mostrar a relação entre duas variáveis numéricas, mas é preciso ser cético e perguntar se existem outras variáveis que poderiam explicar ou modificar a relação observada.
+Gráficos de dispersão são úteis para mostrar a relação entre duas variáveis numéricas, mas é preciso ser cético e perguntar se existem outras variáveis que poderiam explicar ou modificar a relação observada.
 
--   Por exemplo, a relação entre tamanho da nadadeira e peso varia entre as espécies?
+Por exemplo, a relação entre tamanho da nadadeira e peso varia entre as espécies?
 
-    ```{r}
-    ggplot(
-      data = penguins,
-      mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)
-    ) +
-      geom_point()
-    ```
+```{r, echo = TRUE}
+
+ggplot(
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)
+) +
+  geom_point()
+
+```
 
 ## 
 
@@ -372,11 +311,10 @@ ggplot(penguins, aes(x = body_mass_g)) +
 
 -   Ele também é útil para identificar potenciais outliers.
 
-```{r, echo = TRUE}
-
-ggplot(penguins, aes(x = species, y = body_mass_g)) +
-  geom_boxplot()
-```
+    ```{r}
+    ggplot(penguins, aes(x = species, y = body_mass_g)) +
+      geom_boxplot()
+    ```
 
 ## 
 
