@@ -38,14 +38,14 @@ editor: visual
 
 ###  {.smaller}
 
-| Termos        | Sinônimos                             | Descrição                                                                                                                             |
-|---------------|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados                                                                                                  |
-| Variável      | Coluna, *column*,Cabeçalho            | Onde os dados (valores, registos ou observações) são armazenados e que é utilizado durante a análise                                  |
-| Linha         | *row*, Observação, Registro, Valor    | São dados de diferentes tipos (números, datas, textos, etc                                                                            |
-| **Função**    | Verbo, Comando, Ação                  | São ordens dadas ao software R, para que ele execute uma ação necessária para sua análise                                             |
-| Argumento     | Parâmetros                            | Criar uma personalização de características para executar um comando (cores, tamanhos, caracteres, etc)                               |
-| Output        | Resultado                             | São as saídas oriundas de uma ação solicitada, ou seja, tudo que queremos que nosso código no R retorne para nós, em qualquer formato |
+| Termos | Sinônimos | Descrição |
+|----|----|----|
+| Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados |
+| Variável | Coluna, *column*,Cabeçalho | Onde os dados (valores, registos ou observações) são armazenados e que é utilizado durante a análise |
+| Linha | *row*, Observação, Registro, Valor | São dados de diferentes tipos (números, datas, textos, etc |
+| **Função** | Verbo, Comando, Ação | São ordens dadas ao software R, para que ele execute uma ação necessária para sua análise |
+| Argumento | Parâmetros | Criar uma personalização de características para executar um comando (cores, tamanhos, caracteres, etc) |
+| Output | Resultado | São as saídas oriundas de uma ação solicitada, ou seja, tudo que queremos que nosso código no R retorne para nós, em qualquer formato |
 
 ## 
 
