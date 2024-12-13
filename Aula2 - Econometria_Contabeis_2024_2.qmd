@@ -38,6 +38,7 @@ editor: visual
 
 ###  {.smaller}
 
+<<<<<<< HEAD
 | Termos | Sinônimos | Descrição |
 |----|----|----|
 | Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados |
@@ -46,6 +47,16 @@ editor: visual
 | **Função** | Verbo, Comando, Ação | São ordens dadas ao software R, para que ele execute uma ação necessária para sua análise |
 | Argumento | Parâmetros | Criar uma personalização de características para executar um comando (cores, tamanhos, caracteres, etc) |
 | Output | Resultado | São as saídas oriundas de uma ação solicitada, ou seja, tudo que queremos que nosso código no R retorne para nós, em qualquer formato |
+=======
+| Termos        | Sinônimos                             | Descrição                                                                                                                             |
+|----------------|----------------|-----------------------------------------|
+| Base de dados | banco de dados, *dataframes*, tabelas | Estrutura de armazenamento dos dados                                                                                                  |
+| Variável      | Coluna, *column*,Cabeçalho            | Onde os dados (valores, registos ou observações) são armazenados e que é utilizado durante a análise                                  |
+| Linha         | *row*, Observação, Registro, Valor    | São dados de diferentes tipos (números, datas, textos, etc                                                                            |
+| **Função**    | Verbo, Comando, Ação                  | São ordens dadas ao software R, para que ele execute uma ação necessária para sua análise                                             |
+| Argumento     | Parâmetros                            | Criar uma personalização de características para executar um comando (cores, tamanhos, caracteres, etc)                               |
+| Output        | Resultado                             | São as saídas oriundas de uma ação solicitada, ou seja, tudo que queremos que nosso código no R retorne para nós, em qualquer formato |
+>>>>>>> 48d332e5ecc65e9debb652a6974937c392ea06ed
 
 ## 
 
@@ -89,7 +100,7 @@ dados <- tibble(
   presenca_internacional = sample(c(1, 0), n, replace = TRUE), # Qualitativa
   indice_sustentabilidade = rnorm(n, mean = 6, sd = 2), # Normalmente distribuída
   numero_produtos = rpois(n, lambda = 10), # Distribuição Poisson (assimétrica)
-  participacao_mercado = rexp(n, rate = 0.2), # Exponencial (assimétrica)
+  'PARTICIPACAO_NO_MERCADO' = rexp(n, rate = 0.2), # Exponencial (assimétrica)
   tipo_propriedade = sample(c("privada", "publica", "mista"), n, replace = TRUE), # Qualitativa
   indice_inovacao = rnorm(n, mean = 5, sd = 1.5), # Normalmente distribuída
   nivel_satisfacao_cliente = factor(sample(c("baixo", "medio", "alto"), n, replace = TRUE), levels = c("baixo", "medio", "alto"), ordered = TRUE) # Qualitativa ordinal
@@ -151,7 +162,7 @@ write_xlsx(list("Aba 1" = dados, "Aba 2" = data.frame()), "dados_empresas.xlsx")
 
         ![Atribuição de dados a um objeto no R (Fonte: Introdução à Análise de Dados no R)](atribuição.png)
 
-### Importando arquivos no formato CSV
+### Importando arquivos no formato CSV {.smaller}
 
 -   Utilizaremos uma **função** do pacote *readr*.
 
@@ -170,7 +181,7 @@ write_xlsx(list("Aba 1" = dados, "Aba 2" = data.frame()), "dados_empresas.xlsx")
       
     ```
 
-### Importando arquivos no formato Microssoft Excel
+### Importando arquivos no formato Microssoft Excel {.smaller}
 
 ```{r, echo=TRUE}
 if(!require(readxl)) install.packages("readxl")
@@ -182,7 +193,7 @@ dados <- read_excel("dados_empresas.xlsx",
  skip = 0)
 ```
 
-### Visualizando os dados e arquivos importados
+### Visualizando os dados e arquivos importados {.smaller}
 
 -   Utilize a função *head* para visualizar as primeiras linhas dos **dados**
 
@@ -190,10 +201,13 @@ dados <- read_excel("dados_empresas.xlsx",
 
     dados
 
-    head(dados)
-
-
     ```
+
+###  {.smaller}
+
+```{r, echo=TRUE}
+head(dados)
+```
 
 ### 
 
@@ -266,16 +280,36 @@ library(tidyverse)
 
 ```
 
--   Vamos dar mais uma olhada nos dados, agora com a função *glimpse ()*, do tidyverse:
+### 
+
+-   Vamos aproveitar para dar mais uma olhada nos dados, agora com a função *glimpse ()*, do tidyverse:
+
+    ```{r, echo=TRUE}
+    glimpse(dados)
+    ```
+
+### 
+
+-   Agora vamos utilizar a função *rename ( )* para modificar o nome das variáveis
+
+    ```{r, echo=TRUE}
+    dados <- rename(dados, nome_empresa = 'Nome da Empresa')
+    ```
+
+### 
+
+Utilizando o pacote *janitor*
 
 ```{r, echo=TRUE}
-glimpse(dados)
-```
+# Vamos instalar o pacote janitor para usar a função clean_names()
 
--   Agora vamos utilizar a função *rename ( )*
+if(!require(janitor)) install.packages("janitor") 
+library (janitor) 
 
-```{r, echo=TRUE}
-dados <- rename(dados, nome_empresa = 'Nome da Empresa')
+dados_novo <- clean_names(dados)
+
+colnames(dados)
+
 ```
 
 ### Tipos de variáveis
@@ -288,7 +322,7 @@ dados <- rename(dados, nome_empresa = 'Nome da Empresa')
 
     -   **Qualitativas**: registram caracterísicas não mensuráveis, como textos
 
-### 
+### Tipos de variáveis
 
 ![](tipos_variaveis.png)
 
@@ -298,7 +332,7 @@ dados <- rename(dados, nome_empresa = 'Nome da Empresa')
 
 -   Importante: ao importarmos os dados, nem sempre cada variável foi classificada corretamente
 
-### 
+###  {.smaller}
 
 -   Para inspecionar o tipo de variável vamos utilizar a função *sapply().* Os principais argumentos desta função são:
 
@@ -316,13 +350,9 @@ dados <- rename(dados, nome_empresa = 'Nome da Empresa')
         class(dados$anos_de_operacao)
         ```
 
-```{r, echo=TRUE}
-class(dados$anos_de_operacao)
-```
-
 ### 
 
-Vamos transformr a variável *presenca_internacional* em um fator:
+Vamos transformar a variável *presenca_internacional* em um fator:
 
 ```{r, echo=TRUE}
 
@@ -334,7 +364,6 @@ dados$presenca_internacional_fct <- factor(
     "Com presença internacional"
   )
 )
-
 
 ```
 
