@@ -87,7 +87,7 @@ describe(penguins)
 
 -   O argumento *mapping* define como as variáveis no banco de dados serão mapeadas às propriedades visuais do gráfico (*aesthetics*).
 
-    ```{r}
+    ```{r, echo = TRUE}
     ggplot(
       data = penguins,
       mapping = aes(x = flipper_length_mm, y = body_mass_g)
@@ -106,7 +106,7 @@ describe(penguins)
 
 -   Observe o aviso (*warning*). Este é talvez o aviso mais comum quando utilizamos o R para ciência de dados. O ggplot e diversos outros pacotes são programados para mostrar este aviso.
 
-    ```{r}
+    ```{r, echo = TRUE}
     ggplot(
       data = penguins,
       mapping = aes(x = flipper_length_mm, y = body_mass_g)
@@ -297,27 +297,6 @@ ggplot(penguins, aes(x = body_mass_g)) +
 ```
 :::
 
-## 
-
-### 3.6 Visualizando relações
-
-## 
-
-### 3.6.1 Uma variável numérica e outra categórica
-
--   Uma forma interessante é o uso de *box plots*.
-
--   O **boxplot** é uma abreviação visual da posição e distribuição dos dados.
-
--   Ele também é útil para identificar potenciais outliers.
-
-    ```{r}
-    ggplot(penguins, aes(x = species, y = body_mass_g)) +
-      geom_boxplot()
-    ```
-
-## 
-
 ::: nonincremental
 -   Alternativamente, podemos fazer gráficos de densidade:
 
@@ -338,6 +317,27 @@ ggplot(penguins, aes(x = body_mass_g, color = species, fill = species)) +
 
 ## 
 
+### 3.6 Visualizando relações
+
+## 
+
+### 3.6.1 Uma variável numérica e outra categórica
+
+-   Uma forma interessante é o uso de *box plots*.
+
+-   O **boxplot** é uma abreviação visual da posição e distribuição dos dados.
+
+-   Ele também é útil para identificar potenciais outliers.
+
+    ```{r, echo=TRUE}
+    ggplot(penguins, aes(x = species, y = body_mass_g)) +
+      geom_boxplot()
+    ```
+
+## 
+
+## 
+
 ### 3.6.2 Duas variáveis categóricas
 
 ::: nonincremental
@@ -345,7 +345,7 @@ ggplot(penguins, aes(x = body_mass_g, color = species, fill = species)) +
 
 -   Pode ser de frequência "absoluta" ou relativa:
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, echo=TRUE}
 
 ggplot(penguins, aes(x = island, fill = species)) +
   geom_bar()
