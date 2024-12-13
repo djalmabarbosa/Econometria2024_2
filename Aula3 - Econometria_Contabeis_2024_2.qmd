@@ -1,6 +1,6 @@
 ---
 title: "Econometria"
-subtitle: "Organização dos Dados | Prof. Djalma Barbosa"
+subtitle: "Visualização dos Dados | Prof. Djalma Barbosa"
 format: 
     revealjs:
       slide-number: true
@@ -14,86 +14,372 @@ format:
 editor: visual
 ---
 
-### Avaliando a consistência dos dados
+## 3. Visualizando os dados {.smaller}
 
--   A avaliação da consistência dos dados é uma etapa rotineira na Ciência de Dados
--   O que verificamos?
-    -   O número de linhas e colunas era o esparado?
-    -   Os nomes das variáveis vieram como esperado?
-    -   Quais são os tipos de variáveis que tenho no banco? Eles estão corretos?
+-   Vamos trabalhar com o banco de dados (*data frame*) chamado *penguins*, uma coleção retangular de variáveis (em cada coluna) e observações (nas linhas).
 
-### 
+-   O banco *penguins* contém 344 observações
 
--   Fazendo a leitura dos dados
+    -   Variável: uma quantidade, qualidade ou propriedade que você pode mensurar
 
-    ```{r, echo=TRUE}
-    load("dados_empresas2.RData")
-    ```
+    -   Valor: o estada da variável quando vc a mensura. Pode mudar de mensuração para mensuração
 
--   Dando uma olhada no banco de dados
+    -   Observação: um conjunto de mensurações feitas sob condições silimares. Cada observação possui diversos valores, cada um associado a uma variável
 
-    ```{r, echo=TRUE}
-    library(tidyverse)
-    glimpse(dados)
-    ```
+    -   Dado tabular: um conjunto de valores, cada um associado a uma variável e uma observação. Dados tabulares são *tidy* se cada valor está na sua própria "célula", cada variável está na sua própria coluna e cada observação na sua própria linha.
 
-### Selecionando variáveis para análise
+## 
 
--   Utilizaremos a função *select ( )* do *tidyverse*
+### 3.1 Primeiros passos
 
--   Esta função tem dois argumentos principais
-
-    1.  os dados utilizados
-    2.  o nome das colunas que deve ser selecionadas
-
-    ```{r, echo=TRUE}
-    dados_menor <- select(dados, nome_empresa, setor_atuacao,indice_sustentabilidade)
-    ```
-
--   Vamos utilizar a função *head ( )* para visualizar as primeiras linhas da nova tabela
-
-    ```{r, echo=TRUE}
-    head(dados_menor)
-    ```
-
-### Simplificando o fluxo de análises
-
--   Muitas vezes reaproveitamos o resultado de uma análise (pedaço de código) para a análise seguinte
-
--   i.e, utilizamos o *output* de um código anterior como *argumento* principal para a próxima análise
-
--   Utilizando pipes na primeira parte do código do slide anterior:
-
-    ```{r, echo=TRUE}
-    dados_menor <- dados |>
-      select(nome_empresa, setor_atuacao,indice_sustentabilidade,nivel_satisfacao_cliente,presenca_internacional_fct)
-    ```
-
--   Unindo as duas partes de código:
-
-    ```{r, echo=TRUE}
-    dados_menor <- dados |>
-      select(nome_empresa, setor_atuacao,indice_sustentabilidade,nivel_satisfacao_cliente,presenca_internacional_fct) |>
-      head() |>
-      print()
-    ```
-
-### Excluindo colunas
-
-```{r, echo=TRUE}
-dados_menor_2 <- dados_menor |> 
-  select(-setor_atuacao) |>
-  head() |>
-  print()
+```{r, echo = TRUE}
+library(palmerpenguins)
+library(ggthemes)
 ```
 
-### Inserindo novas colunas
+Penguins data set
+
+```{r, echo = TRUE}
+penguins
+```
+
+## 
+
+### 3.2 Visão alternativa
+
+```{r, echo = TRUE}
+library(tidyverse)
+glimpse(penguins)
+```
+
+## 
+
+### 3.3 Estatísticas descritivas básicas
+
+```{r echo=TRUE,eval=FALSE}
+
+library(Hmisc)
+describe(penguins)
+
+```
+
+## 
+
+### 3.4 Criando um ggplot
+
+Com ggplot2, você começa o gráfico com a função *ggplot()*, que define um objeto de plotagem.
+
+Então, você vai adicionando camadas.
+
+O primeiro argumento de *ggplot()* é o banco de dados que será utilizado para fazer o gráfico.
+
+```{r, echo = TRUE}
+
+library(ggplot2)
+
+ggplot(data = penguins)
+```
+
+## 
+
+###  {data-transition="slide"}
+
+Agora precisamos dizer como as informações dos dados serão apresentadas visualmente.
+
+O argumento *mapping* define como as variáveis no banco de dados serão mapeadas às propriedades visuais do gráfico (*aesthetics*).
 
 ```{r, echo=TRUE}
-dados_menor_2 <- dados_menor |>
-  select(nome_empresa, indice_sustentabilidade) |>
-  mutate(indice_sustentabilidade_log = log(indice_sustentabilidade)) |>
-  head() |>
-  print()
-  
+
+ggplot(
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)
+)
+
 ```
+
+## 
+
+###   {.smaller}
+
+-   Para "colocar os pinguins no gráfico", precisamos definir como representar as observações no gráfico (pontos, barras, retas...?).
+
+-   Observe o gráfico de dispersão (*scatterplot*).
+
+    ```{r,  echo = TRUE}
+    ggplot(
+      data = penguins,
+      mapping = aes(x = flipper_length_mm, y = body_mass_g)
+    ) +
+      geom_point()
+    ```
+
+-   Qual parece ser a relação entre o comprimento da nadadeira do pinguim e o seu peso?
+
+-   Observe o aviso (*warning*). Este é talvez o aviso mais comum quando utilizamos o R para ciência de dados. O ggplot e diversos outros pacotes são programados para mostrar este aviso.
+
+## 
+
+###  {data-transition="slide"}
+
+-   Gráficos de dispersão são úteis para mostrar a relação entre duas variáveis numéricas, mas é preciso ser cético e perguntar se existem outras variáveis que poderiam explicar ou modificar a relação observada.
+
+-   Por exemplo, a relação entre tamanho da nadadeira e peso varia entre as espécies?
+
+    ```{r}
+    ggplot(
+      data = penguins,
+      mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)
+    ) +
+      geom_point()
+    ```
+
+## 
+
+###  {data-transition="slide"}
+
+Agora vamos acrescentar uma linha de tendência:
+
+```{r, echo = TRUE}
+
+ggplot(
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)
+) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+## 
+
+###  {data-transition="slide"}
+
+::: notes
+Quando os mapeamentos estéticos são definidos no *nível global* do *ggplot*, eles são transferidos para cada uma das camadas geométricas (*geom*) subsequêntes do gráfico. Entretanto, cada função geométrica no ggplot2 também aceita um argumento de *mapping*, o que permite mapeamentos estéticos em nível *local*.
+
+Com isto em mente, podemos pensar em uma forma de deixar os pontos coloridos, indicando a espécie e ao mesmo tempo fazer uma linha de tendência com todos os pontos:
+:::
+
+E se quisermos uma única linha de tendência para todos os pontos do gráfico?
+
+```{r, echo = TRUE}
+
+ggplot(
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)
+) +
+  geom_point(mapping = aes(color = species)) +
+  geom_smooth(method = "lm")
+```
+
+## 
+
+###  {data-transition="slide"}
+
+Geralmente não é uma boa ideia utilizar apenas cores para representar informações, uma vez que pessoas percebem cores de forma diferente, havendo pessoas daltônicas ou com outra condição de visão. Além da cor, vamos mapear *species* ao elemento estético *shape.*
+
+```{r, echo = TRUE}
+
+ggplot(
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)
+) +
+  geom_point(mapping = aes(color = species, shape = species)) +
+  geom_smooth(method = "lm")
+```
+
+Observe que a legenda muda automaticamente, informando a forma.
+
+## 
+
+###  {data-transition="slide"}
+
+Vamos incluir títulos no nosso gráfico usando a função *labs( )* em uma nova camada.
+
+Vamos também utilizar uma palheta de cores que é melhor para pessoas daltônicas, com a função *scale_color_colorblind()* do pacote *ggthemes*.
+
+```{r, echo = TRUE}
+
+ggplot(
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)
+) +
+  geom_point(aes(color = species, shape = species)) +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Massa corporal e comprimento da nadadeira",
+    subtitle = "Dimensões para as espécies de pinguins Adelie, Chinstrap, e Gentoo",
+    x = "Comprimento da nadadeira (mm)", y = "Massa corporal (g)",
+    color = "Species", shape = "Species"
+  ) +
+  scale_color_colorblind()
+```
+
+## 
+
+###  {data-transition="slide"}
+
+No R, você pode ou não explicitar os argumentos das funções. Se você não explicita o argumento (p.e., *data* e *mapping* na função *ggplot*), a atribuição é feita na ordem em os argumentos foram criados na função.
+
+Esconder os dois primeiros argumentos de funções muito conhecidas pode trazer simplicidade ao código, permitindo melhor comparação entre eles. Poderíamos ter definido nosso gráfico como:
+
+```{r, eval = FALSE, echo = TRUE}
+
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) + 
+  geom_point()
+```
+
+## 
+
+### 3.5 Visualizando distribuições
+
+::: nonincremental
+-   Uma variável é categórica se pode assumir apenas um pequeno conjunto de valores
+
+-   Podemos utilizar gráfico de barras para observar a distribuição de uma variável categórica:
+
+```{r, echo = TRUE}
+
+ggplot(penguins, aes(x = species)) +
+  geom_bar()
+```
+:::
+
+## 
+
+Se a variável categórica for não-ordenada (não-ordinal), é geralmente preferível reordenar as barras com base nas frequências (da maior para a menor):
+
+```{r, echo = TRUE}
+
+ggplot(penguins, aes(x = fct_infreq(species))) +
+  geom_bar()
+```
+
+##  {.smaller}
+
+::: nonincremental
+-   Se a variáve for numérica (ou quantitativa), pode assumir muitos valores.
+
+-   Variáveis numéricas podem ser contínuas ou discretas.
+
+-   Uma forma usual de visualizar a distribuição de variáveis contínuas é por meio de *histogramas*
+
+```{r, echo = TRUE}
+
+ggplot(penguins, aes(x = body_mass_g)) +
+  geom_histogram(binwidth = 200)
+```
+:::
+
+##  {.smaller}
+
+::: nonincremental
+-   Usamos o argumento *binwidth* para determinar a largura dos intervalos.
+
+-   Você deve explorar diversas larguras para identificar aquela que melhor descreve a distribuição dos dados
+
+```{r, echo=TRUE}
+
+ggplot(penguins, aes(x = body_mass_g)) +
+  geom_histogram(binwidth = 20)
+ggplot(penguins, aes(x = body_mass_g)) +
+  geom_histogram(binwidth = 2000)
+```
+:::
+
+## 
+
+::: nonincremental
+-   Também podemos utilizar gráficos de densidade, uma versão suavisada do histograma.
+
+```{r, echo = TRUE}
+
+ggplot(penguins, aes(x = body_mass_g)) +
+  geom_density()
+```
+:::
+
+## 
+
+### 3.6 Visualizando relações
+
+## 
+
+### 3.6.1 Uma variável numérica e outra categórica
+
+-   Uma forma interessante é o uso de *box plots*.
+
+-   O **boxplot** é uma abreviação visual da posição e distribuição dos dados.
+
+-   Ele também é útil para identificar potenciais outliers.
+
+```{r, echo = TRUE}
+
+ggplot(penguins, aes(x = species, y = body_mass_g)) +
+  geom_boxplot()
+```
+
+## 
+
+::: nonincremental
+-   Alternativamente, podemos fazer gráficos de densidade:
+
+```{r, echo = TRUE}
+
+ggplot(penguins, aes(x = body_mass_g, color = species)) +
+  geom_density(linewidth = 0.75)
+```
+
+-   Podemos também modificar os argumentos para gerar transparências:
+
+```{r, echo = TRUE}
+
+ggplot(penguins, aes(x = body_mass_g, color = species, fill = species)) +
+  geom_density(alpha = 0.5)
+```
+:::
+
+## 
+
+### 3.6.2 Duas variáveis categóricas
+
+::: nonincremental
+-   Gráfico de barras empilhadas
+
+-   Pode ser de frequência "absoluta" ou relativa:
+
+```{r, eval=TRUE}
+
+ggplot(penguins, aes(x = island, fill = species)) +
+  geom_bar()
+
+ggplot(penguins, aes(x = island, fill = species)) +
+  geom_bar(position = "fill")
+
+```
+:::
+
+## 
+
+### 3.6.3 Duas variáveis numéricas
+
+::: nonincremental
+-   O gráfico de dispersão é provavelmente o mais utilizado para visualizar a relação entre duas variáveis numéricas
+
+```{r, echo=TRUE}
+
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point()
+```
+:::
+
+## 
+
+::: nonincremental
+-   Já vimos como incorporar mais variáveis em um gráfico mapeando-as a estéticas adicionais:
+
+```{r, echo=TRUE}
+
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species, shape = island))
+```
+:::
