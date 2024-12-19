@@ -1,0 +1,552 @@
+---
+title: "Econometria"
+subtitle: "Organização dos Dados | Prof. Djalma Barbosa"
+format: 
+    revealjs:
+      slide-number: true
+      slide-level: 3
+      logo: logoUfr.png
+      incremental: true
+      scrollable: true
+      theme: simple
+      code-fold: false
+      self-contained: true
+editor: visual
+---
+
+## Transformação dos dados
+
+## 
+
+![Ciclo de vida de um projeto B - Cientista de Dados (https://r4ds.hadley.nz/)](programa.png)
+
+## 
+
+-   Geralmente os dados precisam de alguma manipulação para gerar visualizações ou sumários mais úteis
+
+-   Tais modificações envolvem, por exemplo: renomear variáveis, reordenar observações, retirar outliers, criar novas variáveis...
+
+-   Utilizaremos o pacote *dplyr*, um dos pilares do *tidyverse*
+
+-   Quando lemos um pacote, se ele tiver funções com os mesmos nomes de funções originais do R, estas serão subsituídas
+
+    -   Se quisermos utilizar as funções originais, precisamos indicar: `stats::filter()`
+
+## 
+
+```{r, echo=TRUE}
+
+library(tidyverse)
+library(nycflights13)
+
+```
+
+```{r, echo=TRUE}
+
+glimpse(flights)
+
+```
+
+## 
+
+-   *flights* é uma tibble, um tipo especial de base de dados
+
+-   A principal diferença entre uma *tibble* e um *data frame* é a forma como os dados são impressos para o usuário
+
+    -   *tibbles* foram pensadas para grandes bancos de dados
+
+    -   são mostrados as primeiras linhas e algumas colunas que cabem na tela
+
+-   No RStudio, podemos ver todos os dados com `View(flights)`
+
+## 
+
+## 4.1 dplyr {.smaller}
+
+-   Possui quatro funções (verbos) principais
+
+-   Características comuns:
+
+    -   o primeiro argumento é sempre um banco de dados
+
+    -   o próximo argumento descreve a coluna que vamos trabalhar, usando o nome da variável (sem aspas)
+
+    -   o resultado é sempre um novo banco de dados
+
+-   Os verbos são agrupados em quatro grupos, baseando-se sobre o quê eles operam: **linhas (rows), colunas (columns), grupos (groups),** ou **tabelas (tables)**
+
+-   Cada verbo tem uma função, então geralmente utilizamos alguns (ou todos)
+
+-   Para isso, utilizamos um operador de "pipe"
+
+    -   Pode ser pensando como um "então"
+
+## 
+
+### Exemplo de pipe
+
+<br>
+
+```{r, echo=TRUE, eval=FALSE}
+
+flights |>
+  filter(dest == "IAH") |> 
+  group_by(year, month, day) |> 
+  summarize(
+    arr_delay = mean(arr_delay, na.rm = TRUE)
+  )
+```
+
+## 4.1.2 Linhas
+
+-   Funções que geralmente afetam as linhas, e deixam as colunas como são
+
+-   Os verbos principais são `filter()` e `arrange()`
+
+    -   `filter()` modifica que linhas são apresentadas sem mudar sua ordem
+
+    -   `arrange()` modifica a ordem das linhas sem modificar o que é apresentado
+
+## `filter`
+
+```{r, echo=TRUE}
+
+library(tidyverse)
+
+flights |> 
+  filter(dep_delay > 120)
+
+```
+
+## 
+
+::: nonincremental
+-   Podemos utilizar diversos operadores: `>, <, >=, <=, ==, !=`
+
+-   Também podemos utilizar as condições `&` ou `,` para indicar "e" e `|` para indicar "ou"
+
+```{r, echo=TRUE}
+
+# Voos que partiram em 1º de Janeiro
+
+flights |> 
+  filter(month == 1 & day == 1)
+
+# Voos que partiram em Janeiro ou Fevereiro
+```
+:::
+
+## 
+
+::: nonincremental
+-   Existe um atalho para combinar `|` e `==` : `%in%`
+
+```{r, echo=TRUE}
+
+flights |> 
+  filter(month %in% c(1, 2))
+
+```
+:::
+
+## 
+
+::: nonincremental
+-   `filter()` executa a operação de filtrar e imprime um novo banco de dados
+
+-   Para salvar o resultado, temos que utilizar o operador de atribuição `<-`
+
+```{r, echo=TRUE}
+
+jan1 <- flights |> 
+  filter(month == 1 & day == 1)
+```
+:::
+
+::: nonincremental
+## `arrange`
+
+-   `arrange` muda a ordem das linhas baseando-se nos valores das colunas
+
+-   Se colocarmos mais de uma coluna como argumento, cada coluna adicional vai operar em cima da coluna anterior
+
+```{r, echo=TRUE}
+
+flights |> 
+  arrange(year, month, day, dep_time)
+```
+:::
+
+## 
+
+::: nonincremental
+-   Podemos utilizar `desc()` juntamente com `arrange()`para re-ordenar os dados baseados naquela coluna do maior para o menor
+
+```{r, echo=TRUE}
+
+flights |> 
+  arrange(desc(dep_delay))
+```
+:::
+
+::: nonincremental
+## `distinct`
+
+-   `distinct()` nos permite identificar as linhas únicas em um banco de dados
+
+-   sem um argumento de coluna, ele opera basicamente sobre linhas
+
+```{r, echo=TRUE}
+
+# Remove linhas duplicadas, se houver
+
+flights |> 
+  distinct()
+
+# Encontra todos os voos com pares de origem e destino únicos
+
+flights |> 
+  distinct(origin, dest)
+```
+:::
+
+## 
+
+-   Se quisermos manter as outras colunas ao filtrar as linhas únicas, podemos utilizar a opção `.keep_all = TRUE`
+
+```{r}
+
+flights |> 
+  distinct(origin, dest, .keep_all = TRUE)
+```
+
+## 
+
+::: nonincremental
+-   Se quisermos contar o número de observações, o melhor é utilizar `count()`
+
+```{r, echo=TRUE}
+
+flights |>
+  count(origin, dest, sort = TRUE)
+```
+:::
+
+## 4.1.2 Colunas
+
+-   Existem 4 verbos importantes que modificam colunas sem modificar linhas
+
+    -   `mutate()`
+
+    -   `select()`
+
+    -   `rename()`
+
+    -   `relocate()`
+
+## `mutate()`
+
+-   Adiciona novas colunas que são criadas com base nas já existentes
+
+```{r, echo=TRUE}
+
+flights |> 
+  mutate(
+    gain = dep_delay - arr_delay,
+    speed = distance / air_time * 60
+  )
+```
+
+## 
+
+-   Como *default*, `mutate()` adiciona as novas colunas do lado direito do banco de dados
+
+-   Podemos modificar este comportamento com os argumentos `.before()`, `.after()` ou `.keep()`
+
+-   Nos exemplos abaixos, não atribuímos as novas variáveis ao banco de dados *flights* nem a um novo banco de dados. Apenas imprimimos o resultado da operação
+
+## 
+
+```{r, echo=TRUE}
+flights |> 
+  mutate(
+    gain = dep_delay - arr_delay,
+    speed = distance / air_time * 60,
+    .before = 1
+  )
+```
+
+```{r, echo=TRUE}
+
+flights |> 
+  mutate(
+    gain = dep_delay - arr_delay,
+    speed = distance / air_time * 60,
+    .after = day
+  )
+```
+
+```{r, echo=TRUE}
+
+flights |> 
+  mutate(
+    gain = dep_delay - arr_delay,
+    hours = air_time / 60,
+    gain_per_hour = gain / hours,
+    .keep = "used"
+  )
+```
+
+## `select()`
+
+-   É comum, em ciência de dados, termos bancos de dados com centenas ou milhares de variáveis
+
+-   Podemos concentrar nossa atenção em um pequeno conjunto de variáveis utilizando `select()`
+
+## 
+
+Podemos selecionar as colunas por nomes:
+
+```{r, echo=TRUE}
+
+flights |> 
+  select(year, month, day)
+```
+
+## 
+
+Podemos selecionar as colunas entre duas:
+
+```{r, echo=TRUE}
+
+flights |> 
+  select(year:day)
+```
+
+## 
+
+Podemos selecionar todas as colunas exceto algumas:
+
+```{r, echo=TRUE}
+
+flights |> 
+  select(!year:day)
+```
+
+## 
+
+Podemos selecionar todas as variáveis que são characteres:
+
+```{r, echo=TRUE}
+
+flights |> 
+  select(where(is.character))
+```
+
+## 
+
+::: callout-note
+## Classes de objetos no R
+
+-   O R possui 5 **classes** de objetos "elementares":
+    -   Caracteres
+    -   Numéricos (números reais)
+    -   Inteiros
+    -   Complexos
+    -   Lógicos (TRUE/FALSE)
+:::
+
+## 
+
+-   Existem muitas funções úteis que podem ser utilizadas junto com `select()`
+
+    -   `starts_with("abc")` identifica variáveis cujo nome começa com "abc"
+
+    -   `ends_with("xyz")`
+
+    -   `contains("ijk")`
+
+    -   `num_range("x", 1:3)`
+
+## 
+
+-   Se quisermos renomear algumas as variáveis enquanto as selecionamos, podemos fazer:
+
+```{r, echo=TRUE}
+
+flights |> 
+  select(tail_num = tailnum)
+```
+
+## `rename()`
+
+-   Utilizamos `rename()` para renomear variáveis, quando queremos manter todas que existem:
+
+```{r, echo=TRUE}
+
+flights |> 
+  rename(tail_num = tailnum)
+```
+
+## `relocate()`
+
+-   Utilize `relocate()` para mover as variáveis
+
+```{r, echo=TRUE}
+
+flights |> 
+  relocate(time_hour, air_time)
+```
+
+## 
+
+-   Também podemos especificar para onde queremos movê-la utilizando os argumentos `.before` e `.after`:
+
+```{r, echo=TRUE}
+
+flights |> 
+  relocate(year:dep_time, .after = time_hour)
+flights |> 
+  relocate(starts_with("arr"), .before = dep_time)
+```
+
+## Colhendo os benefícios do 'pipe'
+
+```{r, echo=TRUE}
+
+flights |> 
+  filter(dest == "IAH") |> 
+  mutate(speed = distance / air_time * 60) |> 
+  select(year:day, dep_time, carrier, flight, speed) |> 
+  arrange(desc(speed))
+```
+
+## 4.1.3 Grupos
+
+-   O dplyr nos permite operar sobre grupos de uma ou mais variáveis
+
+-   Exploraremos as funções `group_by()` e `summarize()`
+
+## `group_by()`
+
+```{r, echo=TRUE}
+
+flights |> 
+  group_by(month)
+```
+
+## `summarize()`
+
+-   Sumarizar, resumir, é a principal operação de grupo
+
+```{r, echo=TRUE}
+
+flights |> 
+  group_by(month) |> 
+  summarize(
+    avg_delay = mean(dep_delay)
+  )
+```
+
+## 
+
+-   O que aconteceu?
+
+-   NA (pronunciamos N-A), é o símbolo do R para *valor ausente* (*missing value*)
+
+-   Esses valores ausentes não permitiram o cálculo da média, gerando um valor ausente
+
+-   Podemos contornar a situação utilizando a opção `na.rm`
+
+## 
+
+```{r, echo=TRUE}
+
+flights |> 
+  group_by(month) |> 
+  summarize(
+    avg_delay = mean(dep_delay, na.rm = TRUE)
+  )
+```
+
+## 
+
+-   Podemos criar inúmeros sumários em apenas uma chamada de `summarize()`
+
+```{r, echo=TRUE}
+
+flights |> 
+  group_by(month) |> 
+  summarize(
+    avg_delay = mean(dep_delay, na.rm = TRUE), 
+    n = n()
+  )
+```
+
+## 
+
+### Funções `slice()`
+
+-   Existem 5 funções que nos permitem extrair linhas específicas dentro de cada grupo
+
+    -   `df |> slice_head(n = 1)` extrai a primeira linha de cada grupo
+
+    -   `df |> slice_tail(n=1)` extrai a última linha de cada grupo
+
+    -   `df |> slice_min(x, n = 1)` extrai a linha com o menor valor da coluna `x`
+
+    -   `df |> slice_max(x, n = 1)` extrai a linha com o maior valor da coluna de `x`
+
+    -   `df |> slice_sample(n = 1)` extrai uma linha aleatória
+
+## 
+
+```{r, echo=TRUE}
+
+flights |> 
+  group_by(dest) |> 
+  slice_max(arr_delay, n = 1) |>
+  relocate(dest)
+```
+
+### Simplificando o fluxo de análises
+
+-   Muitas vezes reaproveitamos o resultado de uma análise (pedaço de código) para a análise seguinte
+
+-   i.e, utilizamos o *output* de um código anterior como *argumento* principal para a próxima análise
+
+-   Utilizando pipes na primeira parte do código do slide anterior:
+
+    ```{r, echo=TRUE}
+    dados_menor <- dados |>
+      select(nome_empresa, setor_atuacao,indice_sustentabilidade,nivel_satisfacao_cliente,presenca_internacional_fct)
+    ```
+
+-   Unindo as duas partes de código:
+
+    ```{r, echo=TRUE}
+    dados_menor <- dados |>
+      select(nome_empresa, setor_atuacao,indice_sustentabilidade,nivel_satisfacao_cliente,presenca_internacional_fct) |>
+      head() |>
+      print()
+    ```
+
+### Excluindo colunas
+
+```{r, echo=TRUE}
+dados_menor_2 <- dados_menor |> 
+  select(-setor_atuacao) |>
+  head() |>
+  print()
+```
+
+### Inserindo novas colunas
+
+```{r, echo=TRUE}
+dados_menor_2 <- dados_menor |>
+  select(nome_empresa, indice_sustentabilidade) |>
+  mutate(indice_sustentabilidade_log = log(indice_sustentabilidade)) |>
+  head() |>
+  print()
+  
+```
